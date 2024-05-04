@@ -1,0 +1,5 @@
+Ip:127.0.0.1
+Port:1919
+Multicast_Address:225.1.1.0
+Multicast_Port:8888
+Timeout:25000

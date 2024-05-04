@@ -1,0 +1,77 @@
+
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+/*Classe che si preoccupa della lettura da/a file json*/
+public class FilesJsonReader{
+    // File di partenza fornito.
+    private final static String START_FILE_HOTELS_PATH = "Files/Json/Hotels.json";
+    // File di hotel utilizzato in cui per ogni hotel sono specificate tutte le recensioni.
+    private final static String END_FILE_HOTELS_PATH = "Files/Json/endHotels.json";
+    private final static String FILE_CLIENTS_PATH = "Files/Json/Clients.json";
+    
+    /* Metodo che fornisce al Server la concurrentHashMap contenente tutti gli hotel. */
+    public static ConcurrentHashMap<String,Hotel> getHotelsFromJson() throws IOException {
+        BufferedReader reader = null;
+        try {
+            // Apro un BufferedReader per leggere dal file
+            reader = Files.newBufferedReader(Paths.get(FilesJsonReader.END_FILE_HOTELS_PATH).toAbsolutePath().normalize());
+            // Leggo gli hotel dal file json e li inserisco in un ArrayList.
+            ArrayList<Hotel> hotelsArray = new Gson().fromJson(reader, new TypeToken<List<Hotel>>() {}.getType());
+            // Inserisco gli hotel nella ConcurrentHashMap
+            ConcurrentHashMap<String,Hotel> hotels = new ConcurrentHashMap<>(hotelsArray.size());
+            for(Hotel hotel : hotelsArray) {
+                hotels.put(hotel.getId(), new Hotel(hotel.getId(), hotel.getName(), hotel.getDescription(),
+                        hotel.getCity(),hotel.getPhone(), hotel.getServices(), hotel.getRatings()));
+            }
+            return hotels;
+        }
+        catch (IOException ex) { // Se ho problemi ad aprire il primo file apro il secondo.
+            try{
+                // Apro un BufferedReader per leggere dal file
+                reader = Files.newBufferedReader(Paths.get(FilesJsonReader.START_FILE_HOTELS_PATH).toAbsolutePath().normalize());
+                // Leggo gli hotel dal file json e li inserisco in un ArrayList.
+                ArrayList<StartHotel> hotelsArray = new Gson().fromJson(reader, new TypeToken<List<StartHotel>>() {}.getType());
+                // Inserisco gli hotel nella ConcurrentHashMap
+                ConcurrentHashMap<String,Hotel> hotels = new ConcurrentHashMap<>(hotelsArray.size());
+                for(StartHotel startHotel : hotelsArray) {
+                    hotels.put(startHotel.getId(), new Hotel(startHotel.getId(), startHotel.getName(), startHotel.getDescription(),
+                            startHotel.getCity(),startHotel.getPhone(), startHotel.getServices()));
+                }
+                return hotels;
+            }
+            catch (IOException ex2) {
+                throw new IOException();
+            }
+        }
+    }
+    
+    /* Restituisce una cuncurrentHashMap al server che contiene tutti gli utenti del file, se presente, 
+    altrimenti ritorna una cuncurrentHashMap vuota */
+    public static ConcurrentHashMap<String,User> getUsersFromJson() {
+        try {
+            // Apro un BufferedReader per leggere dal file
+            BufferedReader reader = Files.newBufferedReader(Paths.get(FilesJsonReader.FILE_CLIENTS_PATH));
+            // Leggo gli hotel dal file json e li inserisco in un ArrayList.
+            ArrayList<User> usersArray = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
+            // Inserisco gli hotel nella ConcurrentHashMap
+            ConcurrentHashMap<String,User> users = new ConcurrentHashMap<>(usersArray.size());
+            for(User user : usersArray) {
+                users.put(user.getUsername(), user);
+            }
+            return users;
+        }
+        catch (IOException ex) { 
+            return new ConcurrentHashMap <String,User> ();
+        }
+    }
+    
+}
