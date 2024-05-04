@@ -58,15 +58,20 @@ public class FilesJsonReader{
     altrimenti ritorna una cuncurrentHashMap vuota */
     public static ConcurrentHashMap<String,User> getUsersFromJson() {
         try {
+            ConcurrentHashMap<String, User> users;
             // Apro un BufferedReader per leggere dal file
             BufferedReader reader = Files.newBufferedReader(Paths.get(FilesJsonReader.FILE_CLIENTS_PATH));
-            // Leggo gli hotel dal file json e li inserisco in un ArrayList.
+            // Leggo gli utenti dal file json e li inserisco in un ArrayList.
             ArrayList<User> usersArray = new Gson().fromJson(reader, new TypeToken<List<User>>() {}.getType());
-            // Inserisco gli hotel nella ConcurrentHashMap
-            ConcurrentHashMap<String,User> users = new ConcurrentHashMap<>(usersArray.size());
-            for(User user : usersArray) {
-                users.put(user.getUsername(), user);
+            if(usersArray != null) {
+                // Inserisco gli utenti nella ConcurrentHashMap
+                users = new ConcurrentHashMap<>(usersArray.size());
+                for (User user : usersArray) {
+                    users.put(user.getUsername(), user);
+                }
             }
+            else
+                users = new ConcurrentHashMap<>();
             return users;
         }
         catch (IOException ex) { 

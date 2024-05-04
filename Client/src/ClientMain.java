@@ -1,7 +1,8 @@
 
 import java.nio.*;
 import java.nio.channels.*;
-import java.net.*; 
+import java.net.*;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -162,14 +163,35 @@ public class ClientMain {
     private static int readOperation(Scanner scanner){
         int operation = 0;
         boolean isValidInput = false; // Flag per uscire dal ciclo.
-        String prompt = ("Choose: \n 1. Registration \n 2. Login \n 3. Logout \n 4. Search for a hotel in a city \n "
-                + "5. Search all hotel in a city \n 6. Insert review \n 7. Show my badges.\n 8. Exit. \n");
-        while (!isValidInput) {
-            operation = ConsoleManage.synchronizedIntegerRead(prompt, scanner);
-            if (operation >= 1 && operation <= 8) {
-                isValidInput = true; // Imposta la flag su true se il numero è valido e nell'intervallo 1-7
-            } else {
-                prompt = ("Choice not allowed. Please enter a number between 1 and 8.\n");
+
+        if(ClientMain.username.isEmpty()) {
+            HashMap<Integer, Integer> map = new HashMap<>(3); // Mappa utilizzata esclusivamente per l'output su console.
+            map.put(3,4);
+            map.put(4,5);
+            map.put(5,8);
+            String prompt = ("Choose: \n 1. Registration \n 2. Login \n 3. Search for a hotel in a city \n "
+                    + "4. Search all hotel in a city \n 5. Exit. \n");
+            while (!isValidInput) {
+                operation = ConsoleManage.synchronizedIntegerRead(prompt, scanner);
+                if (operation >= 1 && operation <= 5) {
+                    isValidInput = true; // Imposta la flag su true se il numero è valido e nell'intervallo 1-7
+                } else {
+                    prompt = ("Choice not allowed. Please enter a number between 1 and 5.\n");
+                }
+            }
+            if(operation == 3 || operation == 4 || operation == 5)
+                operation = map.get(operation);
+        }
+        else {
+            String prompt = ("Choose: \n 1. Registration \n 2. Login \n 3. Logout \n 4. Search for a hotel in a city \n "
+                + "5. Search all hotel in a city \n 6. Insert review \n 7. Show my badges.\n");
+            while (!isValidInput) {
+                operation = ConsoleManage.synchronizedIntegerRead(prompt, scanner);
+                if (operation >= 1 && operation<=8) {
+                    isValidInput = true; // Imposta la flag su true se il numero è valido e nell'intervallo 1-7
+                } else {
+                    prompt = ("Choice not allowed. Please enter a number between 1 and 7.\n");
+                }
             }
         }
         return operation;
@@ -232,11 +254,8 @@ public class ClientMain {
     // Legge da riga di comando username, invia tutto al server, stampa risultato dell'operazione di logout.
     private static void logout (SocketChannel server,int operation, Scanner scanner) throws IOException{
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
-        // Lettura da riga di comando dell'username.
-        String username = ClientMain.readString(scanner, "username");
-        ClientMain.username = "";
         // Invio al server: l'operazione che voglio eseguire e l'username.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{username});
+        ClientMain.writeToServer(server, new int[]{operation}, new String[]{ClientMain.username});
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
         ConsoleManage.synchronizedPrint("[logout] codice ricevuto: "+ code);

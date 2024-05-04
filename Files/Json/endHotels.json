@@ -91,7 +91,7 @@
         "timestamp": 1706434470
       }
     },
-    "weightedAverageReviews": 2.9045961482947638
+    "weightedAverageReviews": 2.894930279864375
   },
   {
     "id": "105",
@@ -197,7 +197,7 @@
         "timestamp": 1706435491
       }
     },
-    "weightedAverageReviews": 2.033217303806335
+    "weightedAverageReviews": 2.0264511959050626
   },
   {
     "id": "10",
@@ -270,7 +270,7 @@
         "timestamp": 1707475531
       }
     },
-    "weightedAverageReviews": 3.032771183732755
+    "weightedAverageReviews": 3.0226787764772247
   },
   {
     "id": "3",
@@ -297,7 +297,7 @@
         "timestamp": 1706434586
       }
     },
-    "weightedAverageReviews": 2.6867514371726564
+    "weightedAverageReviews": 2.677810508874547
   },
   {
     "id": "4",
@@ -316,7 +316,7 @@
         "timestamp": 1706434621
       }
     },
-    "weightedAverageReviews": 2.468906726050549
+    "weightedAverageReviews": 2.4606907378847187
   },
   {
     "id": "5",
@@ -352,7 +352,7 @@
         "timestamp": 1706436258
       }
     },
-    "weightedAverageReviews": 2.1784471112210726
+    "weightedAverageReviews": 2.1711977098982813
   },
   {
     "id": "6",
@@ -1112,7 +1112,7 @@
         "timestamp": 1706434455
       }
     },
-    "weightedAverageReviews": 2.1784471112210726
+    "weightedAverageReviews": 2.171197709898281
   },
   {
     "id": "24",
@@ -1207,8 +1207,17 @@
       "Piscina",
       "Cancellazione gratuita"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 3,
+        "posizione": 4,
+        "pulizia": 5,
+        "servizio": 3,
+        "prezzo": 4,
+        "timestamp": 1714812834
+      }
+    },
+    "weightedAverageReviews": 3.8
   },
   {
     "id": "121",
@@ -1600,7 +1609,7 @@
         "timestamp": 1707475207
       }
     },
-    "weightedAverageReviews": 3.3254484624051925
+    "weightedAverageReviews": 3.31438208840049
   },
   {
     "id": "144",
@@ -2541,7 +2550,7 @@
         "timestamp": 1706434420
       }
     },
-    "weightedAverageReviews": 1.4522980741473819
+    "weightedAverageReviews": 1.4474651399321874
   },
   {
     "id": "113",
@@ -2615,8 +2624,17 @@
     "city": "Roma",
     "phone": "369-4805335",
     "services": [],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 3,
+        "posizione": 4,
+        "pulizia": 5,
+        "servizio": 2,
+        "prezzo": 2,
+        "timestamp": 1714821218
+      }
+    },
+    "weightedAverageReviews": 3.2
   },
   {
     "id": "118",
