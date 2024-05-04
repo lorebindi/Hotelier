@@ -275,7 +275,6 @@ public class ServerMain {
 
     }
 
-
     /**
      * Metodo che gestisce la registrazione di un nuovo utente ricevendo username e password dal
      * client, ne verifica l'univocità e li memorizza. La password viene ricevuta in chiaro e poi
@@ -287,7 +286,7 @@ public class ServerMain {
      *              0 la registrazione è avvenuta con successo.
      *              1 l'username è già in uso.
      *             -1 se si verifica un errore di I/O.
-     *             -5 se il la connessione è stata chiusa improvvisamente.
+     *             -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int registration(SocketChannel client, SelectionKey key) {
         // Ricezione username e password
@@ -348,7 +347,7 @@ public class ServerMain {
      *             -2 se l'username non esiste.
      *             -3 se la password è errata.
      *             -4 se si verifica un errore di I/O.
-     *             -5 se il la connessione è stata chiusa improvvisamente.
+     *             -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int login (SocketChannel client, SelectionKey key) {
         
@@ -412,8 +411,6 @@ public class ServerMain {
         key.attach(objectAttach);
         return 0;
     }
-    
-    // Return value: 0 okay, -1 l'utente non è loggato, -2 username fornito != username login, -3 server error, -5 il client ha chiuso il canale.
 
     /**
      * Metodo che gestisce il logout di un utente connesso tramite SocketChannel. Prima verifica
@@ -427,14 +424,10 @@ public class ServerMain {
      *            -1 se l'utente non ha fatto precedentemente il login.
      *            -2 se l'username fornito non corrisponde a quello con cui l'utente era loggato.
      *            -3 se si verifica un errore di I/O
-     *            -5 se il la connessione è stata chiusa improvvisamente.
+     *            -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int logout (SocketChannel client, SelectionKey key) {
-        
         String username = "";
-
-
-        // L'utente è loggato, ricezione username.
         try{
             // Leggo l'intero (4 byte) che mi identifica la lunghezza della stringa.
             int string_length = ServerMain.readIntegerFromClient(client);
@@ -469,8 +462,21 @@ public class ServerMain {
         // L'username è lo stesso con cui si è fatto login.
         return 0;
     }
-    
-    // Return value: 0 okay, -1 hotel inesistente, -2 server error.
+
+    /**
+     * Metodo che cerca un hotel specifico basandosi sul nome e sulla città dell'hotel stesso.
+     * Riceve due stringhe dal client: prima il nome dell'hotel poi la città, fa la ricerca
+     * nell'insieme degli hotel, se lo trova salva le informazioni nella attachment della
+     * SelectionKey.
+     *
+     * @param client il SocketChannel del client a cui scrivere l'intero.
+     * @param key la SelectionKey associata al canale del client.
+     * @return int Un intero che indica il risultato dell'operazione:
+     *             0 se l'hotel è stato trovato con successo.
+     *            -1 se non viene trovato alcun hotel ai criteri di ricerca.
+     *            -2 per errori di I/O.
+     *            -5 se la connessione è stata chiusa improvvisamente.
+     */
     private static int searchHotel (SocketChannel client, SelectionKey key) {
         String nomeHotel = "";
         String citta = "";
@@ -507,8 +513,8 @@ public class ServerMain {
             }
             
             // Ricerca dell'hotel
-            for (Map.Entry<String, Hotel> entry : ServerMain.hotels.entrySet()) {
-                if(entry.getValue().getName().equals(nomeHotel) && entry.getValue().getCity().equals(citta)) {
+            for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(citta).entrySet()) {
+                if(entry.getValue().getName().equals(nomeHotel)) {
                     String temp = entry.getValue().toString();
                     objectAttach.setMessagge(temp);
                     break;
@@ -531,8 +537,23 @@ public class ServerMain {
         
         return 0;
     }
-    
-    // Return value: 0 okay, -1 hotel inesistente, -2 server error.
+
+    /**
+     * Il metodo ricerca e inserisce nell'attachment della SelectionKey una
+     * classifica degli hotel in base alla città specificata dal client.
+     * Il metodo legge una stringa che rappresenta il nome
+     * della città dal client tramite SocketChannel. Utilizza questa città per
+     * recuperare la classifica degli hotel.
+     *
+     * @param client il SocketChannel del client a cui scrivere l'intero.
+     * @param key la SelectionKey associata al canale del client.
+     * @return int Un intero che indica il risultato dell'operazione:
+     *             0 se la classifica è stata trovata con successo.
+     *            -1 se non esiste alcuna classifica per quella città.
+     *            -2 per errori di I/O.
+     *            -5 se la connessione è stata chiusa improvvisamente.
+     * @throws IOException
+     */
     private static int searchHotels (SocketChannel client, SelectionKey key) throws IOException {
         String citta = "";
         ObjectAttach objectAttach = null;
@@ -584,8 +605,23 @@ public class ServerMain {
 
         return 0;
     }
-    
-    // Return value: 0 okay, -1 l'utente non è loggato, -2 server error.
+
+    /**
+     * Questo metodo gestisce l'inserimento di una recensione da parte di
+     * un utente. Riceve dal client il nome, la città dell'hotel e una
+     * serie di interi che rappresentano la recensione tramite
+     * SocketChannel. Aggiunge la recensione al relativo oggetto Hotel e
+     * incrementa il numero di recensioni per quel utente.
+     * @param client il SocketChannel del client a cui scrivere l'intero.
+     * @param key la SelectionKey associata al canale del client.
+     * @return int Un intero che indica il risultato dell'operazione:
+     *             0 se la recensione è stata inserita con successo.
+     *            -1 se l'utente tenta di eseguire l'operazione senza essere loggato.
+     *            -2 per errori di I/O.
+     *            -3 hotel inesistente.
+     *            -5 se la connessione è stata chiusa improvvisamente.
+     * @throws IOException
+     */
     private static int insertReview (SocketChannel client, SelectionKey key) throws IOException {
         String nomeHotel = "";
         String citta = "";
@@ -620,39 +656,57 @@ public class ServerMain {
             // Controllo che l'utente sia loggato.
             if(key.attachment() == null)
                 return -1; // L'utente non è loggato.
-            
-            // Ricerca dell'id dell'hotel a cui deve essere aggiunta la recensione
-            String idHotel = "";
-            for(Map.Entry<String, Hotel> entry : ServerMain.hotels.entrySet()) {
-                if(entry.getValue().getCity().equals(citta) && entry.getValue().getName().equals(nomeHotel)) {
-                    idHotel = entry.getValue().getId();
-                    break;
-                }
-            }
-            
-            // Utilizzo compute() per aggiornare una parte specifica dell'hotel
-            ServerMain.hotels.compute(idHotel, (id, hotel) -> {
-                if (hotel != null) {
-                    // Aggiungo la recensione all'insieme di recensioni per quell'hotel.
-                    hotel.addReview(scores);
-                }
-                // Restituisci l'hotel, modificato o non modificato
-                return hotel;
-            });
-            
-            // Incremento il numero di recensioni per quel user
-            ServerMain.users.get(objectAttach.getUsername()).addRecensione();
 
+            // Controllo che la città sia presente
+            if(ServerMain.getRankings().containsKey(citta)) {
+                // Ricerca dell'id dell'hotel a cui deve essere aggiunta la recensione
+                String idHotel = "";
+                for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(citta).entrySet()) {
+                    if (entry.getValue().getCity().equals(citta) && entry.getValue().getName().equals(nomeHotel)) {
+                        idHotel = entry.getValue().getId();
+                        break;
+                    }
+                }
+                if (idHotel.isEmpty())
+                    return -3; // Hotel inesistente.
+
+                // Utilizzo compute() per aggiornare una parte specifica dell'hotel
+                ServerMain.hotels.compute(idHotel, (id, hotel) -> {
+                    if (hotel != null) {
+                        // Aggiungo la recensione all'insieme di recensioni per quell'hotel.
+                        hotel.addReview(scores);
+                    }
+                    // Restituisci l'hotel, modificato o non modificato
+                    return hotel;
+                });
+
+                // Incremento il numero di recensioni per quel user
+                ServerMain.users.get(objectAttach.getUsername()).addRecensione();
+            }
+            else
+                return -3; // hotel inesistente.
         }
         catch (IOException ex) {
             System.err.println("I/O error from registration function.");
             return -2;
         }
 
-        return 0;
+        return 0; // Successo
     }
-    
-    // Return value: 0 okay, -1 l'utente non è loggato.
+
+    /**
+     * Questo metodo gestisce la richiesta del badge da parte dell'utente.
+     * Il metodo riceve l'username dal client tramite SocketChannel, recupera il badge
+     * associato a quell'username e lo mette nell'attach della SelectionKey.
+     *
+     * @param client il SocketChannel del client a cui scrivere l'intero.
+     * @param key la SelectionKey associata al canale del client.
+     * @return int Un intero che indica il risultato dell'operazione:
+     *             0 se il badge è stato recuperato con successo.
+     *            -1 se l'utente tenta di visualizzare il badge senza essere loggato.
+     *            -5 se la connessione è stata chiusa improvvisamente.
+     * @throws IOException
+     */
     private static int showBadge (SocketChannel client, SelectionKey key) throws IOException {
         // Ricevo l'username dal client.
         int usernameLength = ServerMain.readIntegerFromClient(client);
@@ -666,7 +720,7 @@ public class ServerMain {
             return -1; // L'utente non è loggato.
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         if(objectAttach.getUsername().isEmpty() || ! objectAttach.getUsername().equals(username))
-            return -1; // L'utente non è loggato.
+            return -1; // L'utente non è loggato o è loggato con username diverso.
         else { 
             // L'utente è loggato quindi è sicuramente presente dentro clients: recupero il badge per quell'utente.
             User user = ServerMain.users.get(objectAttach.getUsername());
@@ -677,6 +731,14 @@ public class ServerMain {
         return 0;
     }
 
+    /**
+     * Questo metodo si preoccupa di chiudere la connessione con un client.
+     * Si occupa di eliminare la selection key associata al client e di chiudere
+     * il SocketChannel.
+     * @param client il SocketChannel del client a cui scrivere l'intero.
+     * @param key la SelectionKey associata al canale del client.
+     * @throws IOException
+     */
     private static void closeConnection(SocketChannel client, SelectionKey key) throws IOException{
         key.cancel();
         client.close();
@@ -705,7 +767,7 @@ public class ServerMain {
         
             while (true) {
                 try {
-                    selector.select(); // in questo caso è bloccante.
+                    selector.select();
                 } 
                 catch (IOException ex) {
                     ex.printStackTrace();

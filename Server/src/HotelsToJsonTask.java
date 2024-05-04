@@ -10,8 +10,10 @@ import java.util.List;
 
 public class HotelsToJsonTask implements Runnable{
     private final String END_FILE_HOTELS_PATH = "Files/Json/endHotels.json";
-    
-    /* Scrive tutti gli hotel con le relative recensioni sul file endHotel.json*/
+
+    /**
+     * Metodo che recupera tutti gli Hotel, li ordina per nome e li serializza in file JSON.
+     */
     public void run() {
         // Converti la mappa in una lista di hotel
         List<Hotel> hotelsList = new ArrayList<>(ServerMain.getHotels().values());

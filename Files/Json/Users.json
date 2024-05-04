@@ -1,0 +1,20 @@
+[
+  {
+    "username": "lore",
+    "hashedPassword": "$2a$10$UuPIHDEjWdAlH7mWIkdbLutUK5NbmJrHKAFmeJyWNKkDoV0HYF4VS",
+    "badge": "Recensore",
+    "nRecensioni": 1
+  },
+  {
+    "username": "pippo2",
+    "hashedPassword": "$2a$10$Obw01KfoEnljMtQ7t43xLeMBnBzUjgKl6RVRflu0vm4qYIhQ493iS",
+    "badge": "Recensore",
+    "nRecensioni": 0
+  },
+  {
+    "username": "Luigi",
+    "hashedPassword": "$2a$10$ZvFERyC0ahI.aQ7LL7OPz.YIkS4b4ZgHWM0qEaqNmfSN6HVEzm7NC",
+    "badge": "Recensore",
+    "nRecensioni": 0
+  }
+]

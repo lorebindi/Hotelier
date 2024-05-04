@@ -66,8 +66,12 @@ public class Hotel {
     }
 
 
-    /* Calcola la media dei voti delle proprie recensioni pesata sui relativi timestamp.
-      Il peso di ogni recensione è data dalla sua recenza. */
+    /**
+     * Metodo che calcola media pesata delle recensioni di un Hotel. In particolare
+     * moltiplica ciascuna recensione per il suo peso e poi fa una media aritmetica.
+     *
+     * @return doble che rappresenta la media pesata calcolata, o 0 se non ci sono recensioni associate all'hotel.
+     */
     private double weightedAverageCalculationReviews() {
         Collection<Review> reviews = this.ratings.values();
         if (reviews.isEmpty()) {

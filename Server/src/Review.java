@@ -53,8 +53,13 @@ public class Review {
     }
 
 
-    /*Per il calcolo del peso della singola recensione
-    si ricorre ad una semplice funzione di decadimento y=e^((-1/300)*x).*/
+    /**
+     * Metodo che calcola il peso della recensione basandosi sulla sua attualità.
+     * In particolare il peso viene determinato da una funzione esponenziale decrescente,
+     * dove il tempo trascorso dal momento della pubblicazione delle recensione influisce
+     * negativamente sul suo peso.
+     * @return double Il peso della recensione compreso tra 0 e 1.
+     */
     public double getWeightReview() {
         long currentTimestamp = Instant.now().getEpochSecond();
         long differenceInDays = (currentTimestamp - this.getTimestamp()) / (24 * 60 * 60);

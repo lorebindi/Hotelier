@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
-/* Questa classe è utilizzata unicamente per evitare accavallamenti tra le scritture
- e le letture su e da console da parte del ClientMain e del ListeningUDPTask. */
+/**
+ * Questa classe è utilizzata unicamente per evitare accavallamenti tra le scritture
+ * e le letture su e da console da parte del ClientMain e del ListeningUDPTask.
+ */
 public class ConsoleManage {
     public static synchronized void synchronizedPrint(String message){
         System.out.print(message);

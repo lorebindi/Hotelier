@@ -19,7 +19,11 @@ public class UpdateRankingsTask implements Runnable {
     private static final String MULTICAST_GROUP = ServerFileConfigurationReader.getMulticastAddress(); // Indirizzo di multicast.
     private static final int MULTICAST_PORT = Integer.parseInt(ServerFileConfigurationReader.getMulticastPort()); // Porta di multicast
 
-    // Metodo che ricalcola il ranking e restituisce la HashMap che contiene gli ex-primi hotel di ogni città.
+    /**
+     * Metodo che ricalcola il ranking degli Hotel sulla base della media ponderata di ciascun Hotel.
+     * @return Una HashMap contenente coppie composte dal nome della città e dall'Id dell'hotel migliore
+     *          in quella città prima del ricalcolo.
+     */
     private HashMap<String,String> rankingRecalculation() {
         ConcurrentHashMap<String, RankingStructure> rankings = ServerMain.getRankings();
         // Mi creo la hashMap in cui vado a memorizzare temporaneamente tutti i primi hotel di ogni città, prima del ricalcolo del ranking
@@ -43,7 +47,11 @@ public class UpdateRankingsTask implements Runnable {
         return oldBestHotel;
     }
 
-    // Metodo che invia messaggi UDP per ogni primo hotel di ogni città che è cambiato
+    /**
+     * Metodo che invia messaggi UDP per notificare i cambiamenti per i migliori Hotel di ogni città.
+     * @param oldBestHotel HashMap contenente coppie composte dal nome della città e dall'Id dell'hotel migliore
+     *                     in quella città prima del ricalcolo.
+     */
     private void sendUdpMessagge( HashMap<String,String> oldBestHotel) {
 
         ConcurrentHashMap<String, RankingStructure> rankings = ServerMain.getRankings();

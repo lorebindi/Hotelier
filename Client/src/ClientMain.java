@@ -1,4 +1,3 @@
-
 import java.nio.*;
 import java.nio.channels.*;
 import java.net.*;
@@ -12,7 +11,14 @@ public class ClientMain {
     public static final int DEFAULT_PORT = ClientFileConfigurationReader.getClientPort();
     public static String username = "";
 
-    // Invia i valori passati come argomenti al server.
+    /**
+     * Metodo che scrive un insieme di interi e stringhe al server tramite SocketChannel.
+     * @param server Il SocketChannel attraverso il quale i dati saranno inviati al server.
+     * @param integers Un array di interi che include i dati da inviare. Il primo intero è sempre
+     *                 il codice dell'operazione da eseguire sul server.
+     * @param strings Un array di stringhe i cui dati vengono inviati al server.
+     * @throws IOException
+     */
     private static void writeToServer (SocketChannel server, int[] integers, String[] strings) throws IOException{
         
         // Calcola il numero di byte necessari per gli interi
@@ -28,14 +34,14 @@ public class ClientMain {
         
         // Riempimento dell'outputBuffer
         ByteBuffer outputBuffer = ByteBuffer.allocate(nBytes);
-        // Inserisco nel buffer il codice della registrazione
+        // Inserisco nel buffer il codice dell'operazione.
         outputBuffer.putInt(integers[0]);
         // Inserisco nel buffer le coppie (lunghezza stringhe - stringhe)
         for (String str : strings) {
             outputBuffer.putInt(str.length());
             outputBuffer.put(str.getBytes());
         }
-        // Se l'operazione è la numero 6 devo aggiungere anche i valori della recensione.
+        // Se l'operazione è la numero 6 (insertReview) devo aggiungere anche i valori della recensione.
         if(integers[0] == 6) { 
             for(int i = 1; i<integers.length; i++)
                 outputBuffer.putInt(integers[i]);
@@ -62,8 +68,13 @@ public class ClientMain {
         }
          
     }
-    
-    // Restituisce un intero ricevuto dal server oppure -5 se il canale è stato chiuso dal server.
+
+    /**
+     * Metodo che legge un singolo intero dal server tramite SocketChannel.
+     * @param server Il SocketChannel attraverso il quale i dati saranno inviati al server.
+     * @return
+     * @throws IOException
+     */
     private static int readIntegerFromServer(SocketChannel server) throws IOException {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(Integer.BYTES);
@@ -91,8 +102,17 @@ public class ClientMain {
             throw new IOException();
         }
     }
-    
-    // Restituisce un array di byte ricevuto dal server oppure un array di un singolo byte se il server ha chiuso il canale.
+
+    /**
+     * Metodo che legge una stringa sotto forma di array di byte dal server tramite SocketChannel
+     * assumendo che i primi 4 byte siano sempre la lunghezza della stringa.
+     *
+     * @param server Il SocketChannel attraverso il quale i dati saranno inviati al server.
+     * @param nByteToRead Il numero dei bytes effettivi da leggere
+     * @return byte[] Un array di byte contenente la stringa letta, oppure un array di byte
+     *                di lunghezza 1 in caso di errore.
+     * @throws IOException
+     */
     private static byte[] readStringFromServer(SocketChannel server, int nByteToRead) throws IOException {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(nByteToRead);
@@ -122,8 +142,15 @@ public class ClientMain {
             throw new IOException();
         }
     }
-    
-    // Restituisce i valori numerici di una recensione letti da riga di comando.
+
+    /**
+     * Metodo che legge da riga di comando i punteggi della recensione
+     * di un hotel tramite Scanner. Se l'utente inserisce un valore non valido
+     * il sistema lo obbliga a reinserirlo fino a quando non sarà corretto.
+     *
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @return int[] Un array di interi contenenti i cinque punteggi di recensione validi.
+     */
     private static int[] readScoresReview(Scanner scanner) {
         int[] scores = new int[5];
         final String globalScore = "Global score";
@@ -159,7 +186,13 @@ public class ClientMain {
         return ConsoleManage.synchronizedStringRead(stringToShow, scanner);
     }
 
-    // Restituisce l'intero letto da riga di comando
+    /**
+     * Metodo che legge da riga di comando l'operazione richiesta dall'utente.
+     * Le operazioni disponibili variano a seconda che l'utente sia loggato o meno.
+     *
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @return int L'intero valido che rappresenta l'operazione richiesta.
+     */
     private static int readOperation(Scanner scanner){
         int operation = 0;
         boolean isValidInput = false; // Flag per uscire dal ciclo.
@@ -196,8 +229,17 @@ public class ClientMain {
         }
         return operation;
     }
-    
-    // Legge da riga di comando username e password, invia tutto al server, stampa risultato dell'operazione di registrazione.
+
+    /**
+     *  Metodo che gestisce la registrazione di un nuovo utente. Prima recupera
+     *  username e password da riga di comando, dopo di che li invia al server tramite
+     *  SocketChannel, infine attende l'esito dell'operazione e la stampa.
+     *
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice dell'operazione registrazione.
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @throws IOException
+     */
     private static void registration (SocketChannel server,int operation, Scanner scanner) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Ricevo username e password da riga di comando
@@ -220,7 +262,16 @@ public class ClientMain {
         }
     }
 
-    // Legge da riga di comando username e password, invia tutto al server, stampa risultato dell'operazione di login.
+    /**
+     * Metodo che gestisce il login di un nuovo utente. Prima recupera username
+     * e password, dopo di che li invia al server tramite SocketChannel insieme al il codice
+     * dell'operazione, infine attende l'esito dell'operazione e la stampa.
+     *
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice del login.
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @throws IOException
+     */
     private static void login (SocketChannel server,int operation, Scanner scanner) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando dell'username.
@@ -250,9 +301,15 @@ public class ClientMain {
         }
         
     }
-    
-    // Legge da riga di comando username, invia tutto al server, stampa risultato dell'operazione di logout.
-    private static void logout (SocketChannel server,int operation, Scanner scanner) throws IOException{
+
+    /**
+     * Metodo che gestisce il logout di un utente. Invia al server tramite SocketChannel il
+     * codice dell'operazione, l'username dell'utente, attende l'esito dell'operazione e la stampa.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice dell'logout.
+     * @throws IOException
+     */
+    private static void logout (SocketChannel server,int operation) throws IOException{
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Invio al server: l'operazione che voglio eseguire e l'username.
         ClientMain.writeToServer(server, new int[]{operation}, new String[]{ClientMain.username});
@@ -274,8 +331,16 @@ public class ClientMain {
                      break;
         }
     }
-    
-    // Legge da riga di comando nomeHotel e citta, invia tutto al server, stampa risultato dell'operazione di searchHotel.
+
+    /**
+     * Metodo che gestisce la richiesta di informazioni da parte di un utente di uno specifico hotel.
+     * Invia al server tramite SocketChannel il codice dell'operazione, il nome,
+     * la città dell'hotel, attende l'esito dell'operazione e la stampa.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice della registrazione.
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @throws IOException
+     */
     private static void searchHotel (SocketChannel server,int operation, Scanner scanner) throws IOException{
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando del nome dell'hotel e della città.
@@ -302,8 +367,16 @@ public class ClientMain {
         }
         
     }
-    
-    // Legge da riga di comando la citta, invia tutto al server, stampa risultato dell'operazione di searchHotels.
+
+    /**
+     * Metodo che gestisce la richiesta di informazioni da parte di un utente della classifica di hotel di
+     * una determinata città. Invia al server tramite SocketChannel il codice dell'operazione, il nome e
+     * la città dell'hotel, attende l'esito dell'operazione e la stampa.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice della searchHotels.
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @throws IOException
+     */
     private static void searchHotels (SocketChannel server,int operation, Scanner scanner) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando della città.
@@ -330,8 +403,16 @@ public class ClientMain {
                      break;
         }
     }
-    
-    // Legge da riga di comando nomeHotel, città e la recensione, invia tutto al server, stampa risultato dell'operazione di insertReview.
+
+    /**
+     * Metodo che gestisce l'inserimento di una recensione per un determinato hotel da parte dell'utente .
+     * Invia al server tramite SocketChannel il codice dell'operazione, il nome, la città dell'hotel, e i punteggi, dopo di che
+     * attende l'esito dell'operazione e la stampa.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice della insertReview.
+     * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
+     * @throws IOException
+     */
     private static void insertReview (SocketChannel server,int operation, Scanner scanner) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         if(ClientMain.username.isEmpty()) {
@@ -360,13 +441,22 @@ public class ClientMain {
                     break;
             case -2: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
+            case -3: ConsoleManage.synchronizedPrint("Inexistent hotel.\n----------------------------------------------\n");
+                break;
             case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
                      break;
         }
         
     }
-    
-    // Invia al server l'username memorizzato, stampa il risultato dell'operazione showMyBadge.
+
+    /**
+     * Metodo che gestisce la richiesta di visualizzazione del badge da parte di un utente.
+     * Il metodo invia al server tramite SocketChannel il codice dell'operazione e l'username, dopo di che
+     * attende l'esito dell'operazione e la stampa.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice della showBadge.
+     * @throws IOException
+     */
     private static void showMyBadge (SocketChannel server,int operation) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Invio al server: l'operazione che voglio eseguire e l'username.
@@ -396,7 +486,13 @@ public class ClientMain {
         }
     }
 
-    // Comunica al server la chiusura del canale e chiude il canale.
+    /**
+     * Metodo che chiude la connessione con il server. Il metodo invia il server
+     * il codice dell'operazione di chiusura della connessione e poi chiude il canale.
+     * @param server Il SocketChannel per comunicare con il server.
+     * @param operation Il codice della closeConnection.
+     * @throws IOException
+     */
     private static void closeConnection(SocketChannel server, int operation) throws IOException{
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Invio al server: l'operazione che voglio eseguire e l'username.
@@ -437,7 +533,7 @@ public class ClientMain {
                             break;
                         
                     case 3: // Logout
-                            ClientMain.logout(server, operation, scanner);
+                            ClientMain.logout(server, operation);
                             break;
                             
                     case 4: // searchHotel

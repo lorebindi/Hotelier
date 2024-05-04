@@ -16,9 +16,16 @@ public class FilesJsonReader{
     private final static String START_FILE_HOTELS_PATH = "Files/Json/Hotels.json";
     // File di hotel utilizzato in cui per ogni hotel sono specificate tutte le recensioni.
     private final static String END_FILE_HOTELS_PATH = "Files/Json/endHotels.json";
-    private final static String FILE_CLIENTS_PATH = "Files/Json/Clients.json";
-    
-    /* Metodo che fornisce al Server la concurrentHashMap contenente tutti gli hotel. */
+    private final static String FILE_CLIENTS_PATH = "Files/Json/Users.json";
+
+    /**
+     * Metodo che legge le informazioni sugli hotel da un file JSON e li inserisce
+     * in una ConcurrentHashMap. Prima tenta di leggere gli hotel dal file principale endHotel.json,
+     * se fallisce legge dal file di backup Hotel.json.
+     * @return Una ConcurrentHashMap contenente coppie composte da l'Id dell'hotel e il relativo
+     *          oggetto Hotel.
+     * @throws IOException
+     */
     public static ConcurrentHashMap<String,Hotel> getHotelsFromJson() throws IOException {
         BufferedReader reader = null;
         try {
@@ -53,9 +60,15 @@ public class FilesJsonReader{
             }
         }
     }
-    
-    /* Restituisce una cuncurrentHashMap al server che contiene tutti gli utenti del file, se presente, 
-    altrimenti ritorna una cuncurrentHashMap vuota */
+
+    /**
+     * Metodo che legge le informazioni sugli utenti da un file JSON e li inserisce
+     * in una ConcurrentHashMap. Tenta di leggere gli utenti dal file endHotel.json,
+     * se fallisce restituisce una ConcurrentHashMap vuota.
+     * @return Una ConcurrentHashMap contenente coppie composte dall'username dell'utente e il relativo
+     *          oggetto User, altrimenti una CouncurrentHashMap vuota.
+     * @throws IOException
+     */
     public static ConcurrentHashMap<String,User> getUsersFromJson() {
         try {
             ConcurrentHashMap<String, User> users;
