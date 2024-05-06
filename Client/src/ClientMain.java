@@ -203,7 +203,7 @@ public class ClientMain {
             map.put(4,5);
             map.put(5,8);
             String prompt = ("Choose: \n 1. Registration \n 2. Login \n 3. Search for a hotel in a city \n "
-                    + "4. Search all hotel in a city \n 5. Exit. \n");
+                    + "4. Search all hotels in a city \n 5. Exit. \n");
             while (!isValidInput) {
                 operation = ConsoleManage.synchronizedIntegerRead(prompt, scanner);
                 if (operation >= 1 && operation <= 5) {
@@ -216,16 +216,17 @@ public class ClientMain {
                 operation = map.get(operation);
         }
         else {
-            String prompt = ("Choose: \n 1. Registration \n 2. Login \n 3. Logout \n 4. Search for a hotel in a city \n "
-                + "5. Search all hotel in a city \n 6. Insert review \n 7. Show my badges.\n");
+            String prompt = ("Choose: \n 1. Logout \n 2. Search for a hotel in a city \n "
+                + "3. Search all hotels in a city \n 4. Insert review \n 5. Show my badges.\n");
             while (!isValidInput) {
                 operation = ConsoleManage.synchronizedIntegerRead(prompt, scanner);
-                if (operation >= 1 && operation<=8) {
+                if (operation >= 1 && operation<=5) {
                     isValidInput = true; // Imposta la flag su true se il numero è valido e nell'intervallo 1-7
                 } else {
                     prompt = ("Choice not allowed. Please enter a number between 1 and 7.\n");
                 }
             }
+            return operation+2;
         }
         return operation;
     }
