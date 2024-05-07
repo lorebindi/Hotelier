@@ -394,6 +394,7 @@ public class ClientMain {
                     ConsoleManage.synchronizedPrint("[searchHotel] Lunghezza stringa ricevuta: " + stringHotels_length);
                     // Ricevo dal server la sequenza di byte che corrisponde alla stringa che rappresenta l'insieme di hotel.
                     byte[] byteStringHotel = ClientMain.readStringFromServer(server, stringHotels_length);
+                    String temp = new String(byteStringHotel);
                     ConsoleManage.synchronizedPrint(new String(byteStringHotel) + ".\n----------------------------------------------\n");
                     break;
             case -1:ConsoleManage.synchronizedPrint("Non-existent hotel in that city.\n----------------------------------------------\n");

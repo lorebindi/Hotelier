@@ -577,15 +577,7 @@ public class ServerMain {
             RankingStructure temp= ServerMain.rankings.get(citta);
             // Se la città esiste prendo la classifica
             if(temp != null) {
-                ArrayList<String> stringRanking = new ArrayList<>(ServerMain.rankings.get(citta).getRanking());
-                stringRanking.sort(new ComparatoreHotel());
-                StringBuilder sb = new StringBuilder();
-                int i = 1;
-                for(String idHotel : stringRanking){
-                    sb.append(i).append(") ").append(ServerMain.getHotelFromId(idHotel).toString()).append("\n");
-                    i++;
-                }
-                objectAttach.setMessagge(sb.toString());
+                objectAttach.setMessagge(temp.toString());
             }
 
         }

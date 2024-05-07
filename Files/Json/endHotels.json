@@ -91,7 +91,7 @@
         "timestamp": 1706434470
       }
     },
-    "weightedAverageReviews": 2.8756949337277047
+    "weightedAverageReviews": 2.866125242295157
   },
   {
     "id": "105",
@@ -197,7 +197,7 @@
         "timestamp": 1706435491
       }
     },
-    "weightedAverageReviews": 2.0129864536093933
+    "weightedAverageReviews": 2.00628766960661
   },
   {
     "id": "10",
@@ -270,7 +270,7 @@
         "timestamp": 1707475531
       }
     },
-    "weightedAverageReviews": 3.002594606253882
+    "weightedAverageReviews": 2.992602620128416
   },
   {
     "id": "3",
@@ -297,7 +297,7 @@
         "timestamp": 1706434586
       }
     },
-    "weightedAverageReviews": 2.660017813698127
+    "weightedAverageReviews": 2.6511658491230206
   },
   {
     "id": "4",
@@ -316,7 +316,7 @@
         "timestamp": 1706434621
       }
     },
-    "weightedAverageReviews": 2.444340693668549
+    "weightedAverageReviews": 2.4362064559508836
   },
   {
     "id": "5",
@@ -352,7 +352,7 @@
         "timestamp": 1706436258
       }
     },
-    "weightedAverageReviews": 2.1567712002957786
+    "weightedAverageReviews": 2.149593931721368
   },
   {
     "id": "6",
@@ -386,7 +386,7 @@
         "timestamp": 1707565730
       }
     },
-    "weightedAverageReviews": 2.85289537622969
+    "weightedAverageReviews": 2.8434015567985473
   },
   {
     "id": "8",
@@ -999,8 +999,17 @@
       "Servizio in camera",
       "Wi-Fi"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 3,
+        "posizione": 4,
+        "pulizia": 5,
+        "servizio": 3,
+        "prezzo": 2,
+        "timestamp": 1715094026
+      }
+    },
+    "weightedAverageReviews": 3.4
   },
   {
     "id": "88",
@@ -1112,7 +1121,7 @@
         "timestamp": 1706434455
       }
     },
-    "weightedAverageReviews": 2.1567712002957786
+    "weightedAverageReviews": 2.149593931721368
   },
   {
     "id": "24",
@@ -1609,7 +1618,7 @@
         "timestamp": 1707475207
       }
     },
-    "weightedAverageReviews": 3.292359697345687
+    "weightedAverageReviews": 3.281403435602126
   },
   {
     "id": "144",
@@ -2550,7 +2559,7 @@
         "timestamp": 1706434420
       }
     },
-    "weightedAverageReviews": 1.4378474668638523
+    "weightedAverageReviews": 1.4330626211475785
   },
   {
     "id": "113",
@@ -2601,7 +2610,7 @@
         "timestamp": 1706537521
       }
     },
-    "weightedAverageReviews": 2.452502090752403
+    "weightedAverageReviews": 2.444340693668549
   },
   {
     "id": "116",
@@ -2634,7 +2643,7 @@
         "timestamp": 1714821218
       }
     },
-    "weightedAverageReviews": 3.1787376200161104
+    "weightedAverageReviews": 3.168159467997338
   },
   {
     "id": "118",

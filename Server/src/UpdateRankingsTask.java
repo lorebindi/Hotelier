@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /* 
@@ -24,15 +25,15 @@ public class UpdateRankingsTask implements Runnable {
      * @return Una HashMap contenente coppie composte dal nome della città e dall'Id dell'hotel migliore
      *          in quella città prima del ricalcolo.
      */
-    private HashMap<String,String> rankingRecalculation() {
+    private HashMap<String,Hotel> rankingRecalculation() {
         ConcurrentHashMap<String, RankingStructure> rankings = ServerMain.getRankings();
         // Mi creo la hashMap in cui vado a memorizzare temporaneamente tutti i primi hotel di ogni città, prima del ricalcolo del ranking
-        HashMap<String, String> oldBestHotel = new HashMap<>();
+        HashMap<String, Hotel> oldBestHotel = new HashMap<>();
         // Per ogni citta:
         for(Map.Entry<String, RankingStructure> entry : rankings.entrySet()) {
-            PriorityBlockingQueue<String> ranking = entry.getValue().getRanking();
+            ConcurrentSkipListSet<Hotel> ranking = entry.getValue().getRanking();
             // Memorizzo l'Id del migliore hotel per quella città.
-            oldBestHotel.put(entry.getValue().getCity(), ranking.peek());
+            oldBestHotel.put(entry.getValue().getCity(), ranking.first());
             // Svuoto il ranking
             ranking.clear();
             // Prendo tutti gli hotel di quella città.
@@ -42,7 +43,7 @@ public class UpdateRankingsTask implements Runnable {
                 hotel.getWeightedAverageReviews();
             // Ricalcolo il ranking per quella città.
             for(Hotel hotel : hotelOfCity)
-                ranking.offer(hotel.getId());
+                ranking.add(hotel);
         }
         return oldBestHotel;
     }
@@ -52,18 +53,18 @@ public class UpdateRankingsTask implements Runnable {
      * @param oldBestHotel HashMap contenente coppie composte dal nome della città e dall'Id dell'hotel migliore
      *                     in quella città prima del ricalcolo.
      */
-    private void sendUdpMessagge( HashMap<String,String> oldBestHotel) {
+    private void sendUdpMessagge( HashMap<String,Hotel> oldBestHotel) {
 
         ConcurrentHashMap<String, RankingStructure> rankings = ServerMain.getRankings();
         for(Map.Entry<String, RankingStructure> entry : rankings.entrySet()) {
             // Recupero un ranking di una determinata città.
-            PriorityBlockingQueue<String> ranking = entry.getValue().getRanking();
+            ConcurrentSkipListSet<Hotel> ranking = entry.getValue().getRanking();
             // Se il nuovo migliore hotel per quella città è diverso da quello vecchio allora invio messaggio UDP a tutti i cli.
-            if(!ranking.peek().equals(oldBestHotel.get(entry.getValue().getCity()))) {
+            if(!ranking.first().equals(oldBestHotel.get(entry.getValue().getCity()))) {
                 try (MulticastSocket socket = new MulticastSocket()) {
                     // Creo il multicast group
                     InetAddress group = InetAddress.getByName(UpdateRankingsTask.MULTICAST_GROUP);
-                    byte[] data = ("New best Hotel for " + entry.getValue().getCity()+ ": '" + ServerMain.getHotelFromId(ranking.peek()).getName() + "'.").getBytes();
+                    byte[] data = ("New best Hotel for " + entry.getValue().getCity()+ ": '" + ranking.first().getName() + "'.").getBytes();
                     DatagramPacket packet = new DatagramPacket(data, data.length, group, MULTICAST_PORT);
                     socket.send(packet);
                 } catch (IOException ex) {
@@ -75,7 +76,7 @@ public class UpdateRankingsTask implements Runnable {
     
     public void run(){
         // Ricalcolo il ranking per ogni città e mi restituisce tutti gli ex-primi hotel di ogni città. 
-        HashMap<String, String> oldBestHotel = this.rankingRecalculation();
+        HashMap<String, Hotel> oldBestHotel = this.rankingRecalculation();
         System.out.println("Ranking ricalcolato.\n");
         // Invio messaggio UDP al gruppo multicast per ogni primo hotel di ogni città cambiato.
         this.sendUdpMessagge(oldBestHotel);   
