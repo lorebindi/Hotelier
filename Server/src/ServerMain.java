@@ -752,7 +752,7 @@ public class ServerMain {
         // Inserimento nel ThreadPool dei task di scrittura su file di Hotels e Users
         ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new HotelsToJsonTask(), WAITING_SECONDS_FILE_UPDATE, WAITING_SECONDS_FILE_UPDATE, TimeUnit.SECONDS);
         ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new UsersToJsonTask(), WAITING_SECONDS_FILE_UPDATE, WAITING_SECONDS_FILE_UPDATE, TimeUnit.SECONDS);
-        ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new UpdateRankingsTask(), WAITING_SECONDS_RANKING_RECALCULATION, WAITING_SECONDS_RANKING_RECALCULATION, TimeUnit.SECONDS);
+        ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new UpdateRankingsTask(), 0, WAITING_SECONDS_RANKING_RECALCULATION, TimeUnit.SECONDS);
         /*RICORDATI DI CAMBIARE DA SECONDS a MINUTES*/
         ServerSocketChannel serverChannel;
         Selector selector;
