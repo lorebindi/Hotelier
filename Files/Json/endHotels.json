@@ -280,6 +280,14 @@
     "phone": "393-2959804",
     "services": [],
     "ratings": {
+      "1": {
+        "votoComplessivo": 4,
+        "posizione": 4,
+        "pulizia": 4,
+        "servizio": 4,
+        "prezzo": 4,
+        "timestamp": 1715095648
+      },
       "2": {
         "votoComplessivo": 4,
         "posizione": 5,
@@ -297,7 +305,7 @@
         "timestamp": 1706434586
       }
     },
-    "weightedAverageReviews": 2.6511658491230206
+    "weightedAverageReviews": 3.1007772327486802
   },
   {
     "id": "4",
@@ -1099,8 +1107,17 @@
       "Sauna",
       "Cancellazione gratuita"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "votoComplessivo": 4,
+        "posizione": 4,
+        "pulizia": 4,
+        "servizio": 4,
+        "prezzo": 4,
+        "timestamp": 1715095822
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "23",
