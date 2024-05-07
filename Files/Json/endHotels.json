@@ -994,8 +994,17 @@
       "Piscina",
       "Wi-Fi"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 3,
+        "posizione": 3,
+        "pulizia": 3,
+        "servizio": 4,
+        "prezzo": 4,
+        "timestamp": 1715098423
+      }
+    },
+    "weightedAverageReviews": 3.4
   },
   {
     "id": "87",
@@ -2585,8 +2594,17 @@
     "city": "Roma",
     "phone": "332-1286644",
     "services": [],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 4,
+        "posizione": 4,
+        "pulizia": 4,
+        "servizio": 5,
+        "prezzo": 4,
+        "timestamp": 1715100542
+      }
+    },
+    "weightedAverageReviews": 4.2
   },
   {
     "id": "114",

@@ -54,7 +54,6 @@ public class UpdateRankingsTask implements Runnable {
      *                     in quella città prima del ricalcolo.
      */
     private void sendUdpMessagge( HashMap<String, String> oldBestHotel) {
-
         ConcurrentHashMap<String, RankingStructure> rankings = ServerMain.getRankings();
         for(Map.Entry<String, RankingStructure> entry : rankings.entrySet()) {
             // Recupero un ranking di una determinata città.

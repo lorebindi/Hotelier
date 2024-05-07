@@ -353,10 +353,14 @@ public class ServerMain {
         
         String username = "";
         String password = "";
-        
-        // Controllo che l'utente non sia già loggato.
-        ObjectAttach objectAttach = (ObjectAttach) key.attachment();
-        if(objectAttach == null || objectAttach.getUsername().length()<=1) {
+        // Recupero l'attach.
+        ObjectAttach objectAttach = null;
+        if(key.attachment() != null)
+            objectAttach = (ObjectAttach) key.attachment();
+        else
+            objectAttach = new ObjectAttach();
+        // Controllo che l'utente non si loggato
+        if(objectAttach.getUsername().isEmpty()) {
             // L'utente non è loggato, ricezione username e password.
             try{
                 int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 username, 1 password.
@@ -383,22 +387,17 @@ public class ServerMain {
                     }
 
                 }
-
                 // Errore: l'username non esiste. 
                 if (! ServerMain.users.containsKey(username))
-                    return -2; 
-            
+                    return -2;
                 // Errore: password sbagliata.
                 if(! BCrypt.checkpw(password, ServerMain.users.get(username).getHashedPassword())) 
                     return -3;
-                              
-
             }
             catch (IOException ex) {
                 System.err.println("I/O error from registration function.");
                 return -4;
             }
-        
         }
         else {
             // Errore: l'utente è già loggato.
