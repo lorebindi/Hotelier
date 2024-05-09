@@ -8,9 +8,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa è la classe che rappresenta il task lato Server che serializza
+ * gli oggetti User nel file Users.json.
+ */
 public class UsersToJsonTask implements Runnable{
     
-    private final String FILE_CLIENTS_PATH = "Files/Json/Clients.json";
+    private final String FILE_CLIENTS_PATH = "Files/Json/Users.json";
     
     /* Scrive tutti gli utenti sul file endHotel.json*/
     public void run() {

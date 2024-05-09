@@ -83,15 +83,15 @@
     ],
     "ratings": {
       "3": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434470
       }
     },
-    "weightedAverageReviews": 2.8470812910504386
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "105",
@@ -181,23 +181,23 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 5,
-        "pulizia": 4,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706435333
       },
       "3": {
-        "votoComplessivo": 2,
-        "posizione": 2,
-        "pulizia": 2,
-        "servizio": 1,
-        "prezzo": 1,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706435491
       }
     },
-    "weightedAverageReviews": 1.992956903735307
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "10",
@@ -212,15 +212,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 3,
-        "servizio": 2,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1714808552
       }
     },
-    "weightedAverageReviews": 2.9504143614648526
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "2",
@@ -238,39 +238,39 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 3,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434710
       },
       "2": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 3,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1707475252
       },
       "3": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1707475398
       },
       "4": {
-        "votoComplessivo": 5,
-        "posizione": 5,
-        "pulizia": 5,
-        "servizio": 5,
-        "prezzo": 5,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1707475531
       }
     },
-    "weightedAverageReviews": 2.972718290737804
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "3",
@@ -281,31 +281,31 @@
     "services": [],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715095648
       },
       "2": {
-        "votoComplessivo": 4,
-        "posizione": 5,
-        "pulizia": 4,
-        "servizio": 5,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706435389
       },
       "4": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 3,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434586
       }
     },
-    "weightedAverageReviews": 3.0801741378211496
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "4",
@@ -316,15 +316,15 @@
     "services": [],
     "ratings": {
       "5": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 3,
-        "servizio": 4,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434621
       }
     },
-    "weightedAverageReviews": 2.420019097392873
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "5",
@@ -344,23 +344,23 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 4,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706436208
       },
       "2": {
-        "votoComplessivo": 3,
-        "posizione": 2,
-        "pulizia": 1,
-        "servizio": 3,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706436258
       }
     },
-    "weightedAverageReviews": 2.135310968287829
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "6",
@@ -386,15 +386,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 3,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1707565730
       }
     },
-    "weightedAverageReviews": 2.8245085929399742
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "8",
@@ -996,15 +996,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715098423
       }
     },
-    "weightedAverageReviews": 3.377408721267117
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "87",
@@ -1018,15 +1018,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 3,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715094026
       }
     },
-    "weightedAverageReviews": 3.377408721267117
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "88",
@@ -1092,15 +1092,15 @@
     "services": [],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1714808862
       }
     },
-    "weightedAverageReviews": 3.3438029429934994
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "22",
@@ -1118,15 +1118,15 @@
     ],
     "ratings": {
       "2": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 4,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715095822
       }
     },
-    "weightedAverageReviews": 3.9734220250201377
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "23",
@@ -1139,15 +1139,15 @@
     ],
     "ratings": {
       "2": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 3,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434455
       }
     },
-    "weightedAverageReviews": 2.135310968287829
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "24",
@@ -1244,15 +1244,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 3,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1714812834
       }
     },
-    "weightedAverageReviews": 3.7371915245221463
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "121",
@@ -1636,15 +1636,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 5,
-        "pulizia": 4,
-        "servizio": 5,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1707475207
       }
     },
-    "weightedAverageReviews": 3.259600170999559
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "144",
@@ -1793,15 +1793,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 2,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706731077
       }
     },
-    "weightedAverageReviews": 1.8754427752812493
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "183",
@@ -1818,15 +1818,15 @@
     ],
     "ratings": {
       "2": {
-        "votoComplessivo": 3,
-        "posizione": 3,
-        "pulizia": 3,
-        "servizio": 3,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706725928
       }
     },
-    "weightedAverageReviews": 2.163972433016826
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "184",
@@ -1856,15 +1856,15 @@
     ],
     "ratings": {
       "2": {
-        "votoComplessivo": 5,
-        "posizione": 5,
-        "pulizia": 5,
-        "servizio": 5,
-        "prezzo": 5,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706731158
       }
     },
-    "weightedAverageReviews": 3.6066207216947097
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "186",
@@ -2563,15 +2563,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 4,
-        "prezzo": 5,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715272192
       }
     },
-    "weightedAverageReviews": 4.4
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "112",
@@ -2586,15 +2586,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 2,
-        "posizione": 2,
-        "pulizia": 2,
-        "servizio": 2,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706434420
       }
     },
-    "weightedAverageReviews": 1.4235406455252193
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "113",
@@ -2605,15 +2605,15 @@
     "services": [],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 4,
-        "servizio": 5,
-        "prezzo": 4,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715100542
       }
     },
-    "weightedAverageReviews": 4.172093126271145
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "114",
@@ -2646,15 +2646,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 2,
-        "prezzo": 3,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1706537521
       }
     },
-    "weightedAverageReviews": 2.4280992872189033
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "116",
@@ -2679,15 +2679,15 @@
     "services": [],
     "ratings": {
       "1": {
-        "votoComplessivo": 3,
-        "posizione": 4,
-        "pulizia": 5,
-        "servizio": 2,
-        "prezzo": 2,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1714821218
       }
     },
-    "weightedAverageReviews": 3.1471086522291762
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "118",
@@ -2846,15 +2846,15 @@
     ],
     "ratings": {
       "1": {
-        "votoComplessivo": 4,
-        "posizione": 4,
-        "pulizia": 3,
-        "servizio": 4,
-        "prezzo": 5,
+        "overallVote": 0,
+        "positionVote": 0,
+        "cleanlinessVote": 0,
+        "serviceVote": 0,
+        "priceVote": 0,
         "timestamp": 1715272909
       }
     },
-    "weightedAverageReviews": 4.0
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "18",

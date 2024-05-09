@@ -1,4 +1,6 @@
-
+/**
+ * Questa è la classe che rappresenta gli utenti nel sistema.
+ */
 public class User {
     
     private final String username;

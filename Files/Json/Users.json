@@ -6,6 +6,12 @@
     "nRecensioni": 1
   },
   {
+    "username": "Pluto",
+    "hashedPassword": "$2a$10$nRGopnPu8ZMDclRusiToiOPvJik.yzYStJk0dz6A/ozK.qtA2H0ey",
+    "badge": "Recensore",
+    "nRecensioni": 0
+  },
+  {
     "username": "pippo2",
     "hashedPassword": "$2a$10$Obw01KfoEnljMtQ7t43xLeMBnBzUjgKl6RVRflu0vm4qYIhQ493iS",
     "badge": "Recensore",

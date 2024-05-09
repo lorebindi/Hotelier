@@ -9,11 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.PriorityBlockingQueue;
 
-/* 
-Questa classe rappresenta il task lato server che si preoccupa di:
-1) Ricalcolare tutti i ranking per tutte le città.
-2) Inviare datagram UDP nel caso in cui il migliore hotel
-   di una determinata città sia cambiato.
+/**
+ * Questa classe rappresenta il task lato server che si preoccupa di:
+ * 1) Ricalcolare tutti i ranking per tutte le città.
+ * 2) Inviare datagram UDP nel caso in cui il migliore hotel
+ *    di una determinata città sia cambiato.
 */
 public class UpdateRankingsTask implements Runnable {
     

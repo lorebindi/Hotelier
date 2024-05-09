@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Questa è la classe che rappresenta il task lato Server che serializza
+ * gli oggetti Hotel nel file endHotels.json.
+ */
 public class HotelsToJsonTask implements Runnable{
     private final String END_FILE_HOTELS_PATH = "Files/Json/endHotels.json";
 

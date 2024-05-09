@@ -2,7 +2,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.PriorityBlockingQueue;
 
-/* E' la classe che si preoccupa di tenere il ranking locale di una determinata città. */
+/**
+ * Questa è la classe che si preoccupa di tenere il ranking locale di una determinata città.
+ */
 public class RankingStructure {
       
     private final String city;

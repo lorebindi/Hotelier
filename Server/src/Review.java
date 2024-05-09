@@ -1,6 +1,8 @@
-
 import java.time.Instant;
 
+/**
+ * Questa è la classe che rappresenta la singola recensione.
+ */
 public class Review {
     private static int id = 0;
     private final int overallVote;

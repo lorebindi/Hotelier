@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.Map;
 
-// Classe utilizzata soltanto per il parsing dal file Hotels.json.
+/**
+ * Classe utilizzata soltanto per il parsing dal file Hotels.json.
+ */
 
 public class StartHotel {
     private final String id;

@@ -1,11 +1,11 @@
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * Questa è la classe che rappresenta gli Hotel effettivamente utilizzata dal sistema.
+ */
 public class Hotel {
     private final String id;
     private final String name;
