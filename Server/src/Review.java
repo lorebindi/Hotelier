@@ -3,20 +3,20 @@ import java.time.Instant;
 
 public class Review {
     private static int id = 0;
-    private final int votoComplessivo;
-    private final int posizione;
-    private final int pulizia; 
-    private final int servizio;
-    private final int prezzo;
+    private final int overallVote;
+    private final int positionVote;
+    private final int cleanlinessVote;
+    private final int serviceVote;
+    private final int priceVote;
     private final long timestamp; // Secondi passati dal 1 gennaio 1970.
     
     public Review(int votoComlessivo, int posizione, int pulizia, int servizio, int prezzo) {
         Review.id ++;
-        this.votoComplessivo = votoComlessivo;
-        this.posizione = posizione;
-        this.pulizia = pulizia;
-        this.servizio = servizio;
-        this.prezzo = prezzo;
+        this.overallVote = votoComlessivo;
+        this.positionVote = posizione;
+        this.cleanlinessVote = pulizia;
+        this.serviceVote = servizio;
+        this.priceVote = prezzo;
         this.timestamp = Instant.now().getEpochSecond();
     }
 
@@ -29,23 +29,23 @@ public class Review {
     }
     
     public int getVotoComplessivo() {
-        return this.votoComplessivo;
+        return this.overallVote;
     }
   
-    public int getPosizione() {
-        return this.posizione;
+    public int getPositionVote() {
+        return this.positionVote;
     }
 
-    public int getPulizia() {
-        return this.pulizia;
+    public int getCleanlinessVote() {
+        return this.cleanlinessVote;
     }
 
-    public int getServizio() {
-        return this.servizio;
+    public int getServiceVote() {
+        return this.serviceVote;
     }
 
-    public int getPrezzo() {
-        return this.prezzo;
+    public int getPriceVote() {
+        return this.priceVote;
     }
 
     public long getTimestamp() {
@@ -67,8 +67,8 @@ public class Review {
     }
     
     public String toString() {
-        return "Global score: " + this.votoComplessivo + ", Position score: " + this.posizione + ", Cleaning score: " 
-                + this.pulizia + ", Service score: " + this.servizio + ", Price score: " + this.prezzo;
+        return "Global score: " + this.overallVote + ", Position score: " + this.positionVote + ", Cleaning score: "
+                + this.cleanlinessVote + ", Service score: " + this.serviceVote + ", Price score: " + this.priceVote;
     }
     
 }

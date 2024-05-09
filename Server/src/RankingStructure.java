@@ -5,19 +5,19 @@ import java.util.concurrent.PriorityBlockingQueue;
 /* E' la classe che si preoccupa di tenere il ranking locale di una determinata città. */
 public class RankingStructure {
       
-    private final String citta;
+    private final String city;
     private ConcurrentSkipListSet<Hotel> ranking; // Contiene gli id degli hotel.
     
     public RankingStructure (String citta) {
-        this.citta = citta;
+        this.city = citta;
         this.ranking = new ConcurrentSkipListSet<Hotel>(new ComparatoreHotel());
-        for(Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(this.citta).entrySet()) {
+        for(Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(this.city).entrySet()) {
             ranking.add(entry.getValue());
         }
     }
     
     public String getCity(){
-        return this.citta;
+        return this.city;
     }
 
     public ConcurrentSkipListSet<Hotel> getRanking() {

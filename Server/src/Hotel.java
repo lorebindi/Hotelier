@@ -80,7 +80,7 @@ public class Hotel {
         double weightedSum = 0;
         for (Review review : reviews) {
             double weight = review.getWeightReview();
-            double averageRatingReview = (review.getPosizione() + review.getPrezzo() + review.getPulizia() + review.getServizio() + review.getVotoComplessivo())/5.0;
+            double averageRatingReview = (review.getPositionVote() + review.getPriceVote() + review.getCleanlinessVote() + review.getServiceVote() + review.getVotoComplessivo())/5.0;
             weightedSum +=  averageRatingReview * weight;
         }
 

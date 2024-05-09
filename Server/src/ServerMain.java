@@ -197,7 +197,7 @@ public class ServerMain {
     private static void writeIntToClient (SocketChannel client, SelectionKey key) throws IOException, ClosedChannelException {
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
-        System.out.println("[writeIntToClient] inviato intero: " + objectAttach.getOutput());
+        //System.out.println("[writeIntToClient] inviato intero: " + objectAttach.getOutput());
         buffer.putInt(objectAttach.getOutput());
         buffer.flip();
         int bytesWritten = 0;
@@ -214,7 +214,7 @@ public class ServerMain {
             client.close();
             throw new IOException("Problem with the connection from client");
         }
-        System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
+        //System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
         // Se il canale è aperto rimetto la chiave in OP_READ, altrimenti elimino la chiave.
         if(client.isOpen())
             key.interestOps(SelectionKey.OP_READ);
@@ -238,8 +238,8 @@ public class ServerMain {
         int nBytesToSend = Integer.BYTES;
         if(objectAttach.getOutput() == 0)
             nBytesToSend += Integer.BYTES + objectAttach.getMessagge().getBytes().length;
-        System.out.println("Bytes della stringa: " + objectAttach.getMessagge().getBytes().length);
-        System.out.println("Bytes da inviare al client: " + nBytesToSend);
+        //("Bytes della stringa: " + objectAttach.getMessagge().getBytes().length);
+        //System.out.println("Bytes da inviare al client: " + nBytesToSend);
         // searchHotel o searchHotels è andata a buon fine: devo inviare sia il risultato dell'operazione che una stringa.
         if(nBytesToSend>4) {
             ByteBuffer outputBuffer = ByteBuffer.allocate(nBytesToSend);
@@ -257,7 +257,7 @@ public class ServerMain {
                 while (outputBuffer.hasRemaining()) {
                     bytesWritten = client.write(outputBuffer);
                 }
-                System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
+                //System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
             } catch (ClosedChannelException cce) {
                 // Il canale è chiuso dal lato client
                 client.close();
@@ -357,8 +357,10 @@ public class ServerMain {
         ObjectAttach objectAttach = null;
         if(key.attachment() != null)
             objectAttach = (ObjectAttach) key.attachment();
-        else
+        else {
             objectAttach = new ObjectAttach();
+            key.attach(objectAttach);
+        }
         // Controllo che l'utente non si loggato
         if(objectAttach.getUsername().isEmpty()) {
             // L'utente non è loggato, ricezione username e password.
@@ -405,9 +407,7 @@ public class ServerMain {
         }
         
         // Login effettuato correttamente.
-        objectAttach = new ObjectAttach();
         objectAttach.setUsername(username);
-        key.attach(objectAttach);
         return 0;
     }
 
@@ -454,7 +454,7 @@ public class ServerMain {
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         
         // Errore: l'username non è lo stesso con cui si è fatto login.
-        System.out.println(objectAttach.getUsername()+ username);
+        //System.out.println(objectAttach.getUsername()+ username);
         if(!objectAttach.getUsername().equals(username)){
             return -2;
         }
@@ -477,17 +477,17 @@ public class ServerMain {
      *            -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int searchHotel (SocketChannel client, SelectionKey key) {
-        String nomeHotel = "";
-        String citta = "";
+        String hotelName = "";
+        String city = "";
         ObjectAttach objectAttach = null;
         if(key.attachment() != null)
             objectAttach = (ObjectAttach) key.attachment();
         else
             objectAttach = new ObjectAttach();
         try{
-            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 nomeHotel, 1 città.
+            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 hotelName, 1 città.
 
-            // Due cicli: primo ciclo leggo il nomeHotel, secondo ciclo leggo la citta.
+            // Due cicli: primo ciclo leggo il hotelName, secondo ciclo leggo la citta.
             while(i<2) {
                 // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
                 int string_length = ServerMain.readIntegerFromClient(client);
@@ -500,20 +500,20 @@ public class ServerMain {
                 if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
                 // Conversione in stringa
                 if(i == 0) {
-                    nomeHotel = new String(stringBytes);
-                    System.out.println("Nome hotel: '" + nomeHotel + "'.");
+                    hotelName = new String(stringBytes);
+                    //System.out.println("Nome hotel: '" + hotelName + "'.");
                     i++;
                 }
                 else {
-                    citta = new String(stringBytes); 
-                    System.out.println("Citta: '" + citta + "'.");
+                    city = new String(stringBytes);
+                    //System.out.println("Citta: '" + city + "'.");
                     i++;
                 }
             }
             
             // Ricerca dell'hotel
-            for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(citta).entrySet()) {
-                if(entry.getValue().getName().equals(nomeHotel)) {
+            for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
+                if(entry.getValue().getName().equals(hotelName)) {
                     String temp = entry.getValue().toString();
                     objectAttach.setMessagge(temp);
                     break;
@@ -554,7 +554,7 @@ public class ServerMain {
      * @throws IOException
      */
     private static int searchHotels (SocketChannel client, SelectionKey key) throws IOException {
-        String citta = "";
+        String city = "";
         ObjectAttach objectAttach = null;
         if(key.attachment() != null)
             objectAttach = (ObjectAttach) key.attachment();
@@ -571,9 +571,9 @@ public class ServerMain {
             // Se il canale è stato chiuso esco.
             if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
             // Conversione in stringa
-            citta = new String(stringBytes);
+            city = new String(stringBytes);
             
-            RankingStructure temp= ServerMain.rankings.get(citta);
+            RankingStructure temp= ServerMain.rankings.get(city);
             // Se la città esiste prendo la classifica
             if(temp != null) {
                 objectAttach.setMessagge(temp.toString());
@@ -614,8 +614,8 @@ public class ServerMain {
      * @throws IOException
      */
     private static int insertReview (SocketChannel client, SelectionKey key) throws IOException {
-        String nomeHotel = "";
-        String citta = "";
+        String hotelName = "";
+        String city = "";
         int[] scores = new int[5];
         // Recupero il vecchio ObjectAttach
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
@@ -634,9 +634,9 @@ public class ServerMain {
                 if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
                 // Conversione in stringa
                 if(i == 0)
-                    nomeHotel = new String(stringBytes);
+                    hotelName = new String(stringBytes);
                 else
-                    citta = new String(stringBytes);
+                    city = new String(stringBytes);
                 i++;
             }
             // Ricezione dei voti che l'utente ha assegnato all'hotel
@@ -649,11 +649,11 @@ public class ServerMain {
                 return -1; // L'utente non è loggato.
 
             // Controllo che la città sia presente
-            if(ServerMain.getRankings().containsKey(citta)) {
+            if(ServerMain.getRankings().containsKey(city)) {
                 // Ricerca dell'id dell'hotel a cui deve essere aggiunta la recensione
                 String idHotel = "";
-                for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(citta).entrySet()) {
-                    if (entry.getValue().getCity().equals(citta) && entry.getValue().getName().equals(nomeHotel)) {
+                for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
+                    if (entry.getValue().getCity().equals(city) && entry.getValue().getName().equals(hotelName)) {
                         idHotel = entry.getValue().getId();
                         break;
                     }
@@ -787,7 +787,7 @@ public class ServerMain {
                                 client.close(); // Chiudo il canale
                                 break;
                             }
-                            System.out.println("L'operazione che vuole effettuare il client è la: "+ operation);
+                            //System.out.println("L'operazione che vuole effettuare il client è la: "+ operation);
 
                             switch (operation) {
                                 case 1: int output = ServerMain.registration(client, key);

@@ -91,7 +91,7 @@
         "timestamp": 1706434470
       }
     },
-    "weightedAverageReviews": 2.866125242295157
+    "weightedAverageReviews": 2.8470812910504386
   },
   {
     "id": "105",
@@ -197,7 +197,7 @@
         "timestamp": 1706435491
       }
     },
-    "weightedAverageReviews": 2.00628766960661
+    "weightedAverageReviews": 1.992956903735307
   },
   {
     "id": "10",
@@ -220,7 +220,7 @@
         "timestamp": 1714808552
       }
     },
-    "weightedAverageReviews": 2.970149501247504
+    "weightedAverageReviews": 2.9504143614648526
   },
   {
     "id": "2",
@@ -270,7 +270,7 @@
         "timestamp": 1707475531
       }
     },
-    "weightedAverageReviews": 2.992602620128416
+    "weightedAverageReviews": 2.972718290737804
   },
   {
     "id": "3",
@@ -305,7 +305,7 @@
         "timestamp": 1706434586
       }
     },
-    "weightedAverageReviews": 3.1007772327486802
+    "weightedAverageReviews": 3.0801741378211496
   },
   {
     "id": "4",
@@ -324,7 +324,7 @@
         "timestamp": 1706434621
       }
     },
-    "weightedAverageReviews": 2.4362064559508836
+    "weightedAverageReviews": 2.420019097392873
   },
   {
     "id": "5",
@@ -360,7 +360,7 @@
         "timestamp": 1706436258
       }
     },
-    "weightedAverageReviews": 2.149593931721368
+    "weightedAverageReviews": 2.135310968287829
   },
   {
     "id": "6",
@@ -394,7 +394,7 @@
         "timestamp": 1707565730
       }
     },
-    "weightedAverageReviews": 2.8434015567985473
+    "weightedAverageReviews": 2.8245085929399742
   },
   {
     "id": "8",
@@ -1004,7 +1004,7 @@
         "timestamp": 1715098423
       }
     },
-    "weightedAverageReviews": 3.4
+    "weightedAverageReviews": 3.377408721267117
   },
   {
     "id": "87",
@@ -1026,7 +1026,7 @@
         "timestamp": 1715094026
       }
     },
-    "weightedAverageReviews": 3.4
+    "weightedAverageReviews": 3.377408721267117
   },
   {
     "id": "88",
@@ -1100,7 +1100,7 @@
         "timestamp": 1714808862
       }
     },
-    "weightedAverageReviews": 3.3661694347471713
+    "weightedAverageReviews": 3.3438029429934994
   },
   {
     "id": "22",
@@ -1126,7 +1126,7 @@
         "timestamp": 1715095822
       }
     },
-    "weightedAverageReviews": 4.0
+    "weightedAverageReviews": 3.9734220250201377
   },
   {
     "id": "23",
@@ -1147,7 +1147,7 @@
         "timestamp": 1706434455
       }
     },
-    "weightedAverageReviews": 2.149593931721368
+    "weightedAverageReviews": 2.135310968287829
   },
   {
     "id": "24",
@@ -1252,7 +1252,7 @@
         "timestamp": 1714812834
       }
     },
-    "weightedAverageReviews": 3.7621893682468386
+    "weightedAverageReviews": 3.7371915245221463
   },
   {
     "id": "121",
@@ -1644,7 +1644,7 @@
         "timestamp": 1707475207
       }
     },
-    "weightedAverageReviews": 3.281403435602126
+    "weightedAverageReviews": 3.259600170999559
   },
   {
     "id": "144",
@@ -1801,7 +1801,7 @@
         "timestamp": 1706731077
       }
     },
-    "weightedAverageReviews": 1.8879874963915966
+    "weightedAverageReviews": 1.8754427752812493
   },
   {
     "id": "183",
@@ -1826,7 +1826,7 @@
         "timestamp": 1706725928
       }
     },
-    "weightedAverageReviews": 2.1784471112210726
+    "weightedAverageReviews": 2.163972433016826
   },
   {
     "id": "184",
@@ -1864,7 +1864,7 @@
         "timestamp": 1706731158
       }
     },
-    "weightedAverageReviews": 3.630745185368455
+    "weightedAverageReviews": 3.6066207216947097
   },
   {
     "id": "186",
@@ -2561,8 +2561,17 @@
       "Cancellazione gratuita",
       "Piscina"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 4,
+        "posizione": 4,
+        "pulizia": 5,
+        "servizio": 4,
+        "prezzo": 5,
+        "timestamp": 1715272192
+      }
+    },
+    "weightedAverageReviews": 4.4
   },
   {
     "id": "112",
@@ -2585,7 +2594,7 @@
         "timestamp": 1706434420
       }
     },
-    "weightedAverageReviews": 1.4330626211475785
+    "weightedAverageReviews": 1.4235406455252193
   },
   {
     "id": "113",
@@ -2604,7 +2613,7 @@
         "timestamp": 1715100542
       }
     },
-    "weightedAverageReviews": 4.2
+    "weightedAverageReviews": 4.172093126271145
   },
   {
     "id": "114",
@@ -2645,7 +2654,7 @@
         "timestamp": 1706537521
       }
     },
-    "weightedAverageReviews": 2.444340693668549
+    "weightedAverageReviews": 2.4280992872189033
   },
   {
     "id": "116",
@@ -2678,7 +2687,7 @@
         "timestamp": 1714821218
       }
     },
-    "weightedAverageReviews": 3.168159467997338
+    "weightedAverageReviews": 3.1471086522291762
   },
   {
     "id": "118",
@@ -2835,8 +2844,17 @@
       "Palestra",
       "Cancellazione gratuita"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "votoComplessivo": 4,
+        "posizione": 4,
+        "pulizia": 3,
+        "servizio": 4,
+        "prezzo": 5,
+        "timestamp": 1715272909
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "18",

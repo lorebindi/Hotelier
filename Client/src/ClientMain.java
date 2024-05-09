@@ -30,8 +30,6 @@ public class ClientMain {
             }
         }
         
-        ConsoleManage.synchronizedPrint("Bytes da inviare: "+ nBytes + "\n");
-        
         // Riempimento dell'outputBuffer
         ByteBuffer outputBuffer = ByteBuffer.allocate(nBytes);
         // Inserisco nel buffer il codice dell'operazione.
@@ -57,7 +55,6 @@ public class ClientMain {
                 if (bytesWritten == -1) 
                     break;
             }
-            ConsoleManage.synchronizedPrint("Bytes effettivamente inviati: "+ bytesWritten+"\n");
         } catch (ClosedChannelException cce) {
             // Il canale è chiuso dal lato server.
             server.close();
@@ -92,10 +89,8 @@ public class ClientMain {
                     return -5;
                 }
             }
-            ConsoleManage.synchronizedPrint("[readIntegerFromServer] Numero byte letti: " + nBytesRead+"\n");
             inputBuffer.flip();
             int integer = inputBuffer.getInt();
-            ConsoleManage.synchronizedPrint("[readIntegerFromServer] Numero letto: " + integer+"\n");
             return integer;
         }
         catch (IOException e) {
@@ -122,7 +117,6 @@ public class ClientMain {
                 server.close(); // Chiudo il canale.
                 return new byte[1];
             }
-            ConsoleManage.synchronizedPrint("Bytes ricevuti: " + nBytesRead+"\n");
             // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
             while (inputBuffer.hasRemaining() ) {
                 nBytesRead += server.read(inputBuffer);
@@ -131,7 +125,6 @@ public class ClientMain {
                     return new byte[1];
                 }
             }
-            ConsoleManage.synchronizedPrint("[readStringFromServer] Bytes ricevuti: " + nBytesRead+"\n");
             // Prendo i byte dal ByteBuffer
             inputBuffer.flip();
             byte[] bytesReceived = new byte[nByteToRead];
@@ -212,6 +205,7 @@ public class ClientMain {
                     prompt = ("Choice not allowed. Please enter a number between 1 and 5.\n");
                 }
             }
+            ConsoleManage.synchronizedPrint("Hai chiesto l'operazione: " + operation + "\n");
             if(operation == 3 || operation == 4 || operation == 5)
                 operation = map.get(operation);
         }
@@ -225,8 +219,9 @@ public class ClientMain {
                 } else {
                     prompt = ("Choice not allowed. Please enter a number between 1 and 7.\n");
                 }
+                ConsoleManage.synchronizedPrint("You asked for the operation: " + operation + "\n");
+                operation+=2;
             }
-            return operation+2;
         }
         return operation;
     }
@@ -277,7 +272,6 @@ public class ClientMain {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando dell'username.
         String username = ClientMain.readString(scanner, "username");
-        ClientMain.username = username;
         // Lettura da riga di comando della password.
         String password = ClientMain.readString(scanner, "password");
         // Invio al server: l'operazione che voglio eseguire, username e password.
@@ -316,7 +310,6 @@ public class ClientMain {
         ClientMain.writeToServer(server, new int[]{operation}, new String[]{ClientMain.username});
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
-        ConsoleManage.synchronizedPrint("[logout] codice ricevuto: "+ code);
         // Stampo il risultato.
         switch(code){
             case 0: ConsoleManage.synchronizedPrint("Logout successfully.\n----------------------------------------------\n");
@@ -345,10 +338,10 @@ public class ClientMain {
     private static void searchHotel (SocketChannel server,int operation, Scanner scanner) throws IOException{
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando del nome dell'hotel e della città.
-        String nomeHotel = ClientMain.readString(scanner, "name hotel");
-        String citta = ClientMain.readString(scanner, "city");
+        String hotelName = ClientMain.readString(scanner, "name hotel");
+        String city = ClientMain.readString(scanner, "city");
         // Invio al server: l'operazione che voglio eseguire e l'username.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{nomeHotel, citta});
+        ClientMain.writeToServer(server, new int[]{operation}, new String[]{hotelName, city});
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
         switch(code){
@@ -381,9 +374,9 @@ public class ClientMain {
     private static void searchHotels (SocketChannel server,int operation, Scanner scanner) throws IOException {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando della città.
-        String citta = ClientMain.readString(scanner, "city");
+        String city = ClientMain.readString(scanner, "city");
         // Invio al server: l'operazione che voglio eseguire e la citta.
-        ClientMain.writeToServer(server, new int[] {operation}, new String[] {citta});
+        ClientMain.writeToServer(server, new int[] {operation}, new String[] {city});
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
         // Stampo il risultato
@@ -391,7 +384,6 @@ public class ClientMain {
             case 0: ConsoleManage.synchronizedPrint("Search hotels successfully.\n----------------------------------------------\n");
                     // Ricevo dal server la lunghezza della stringa che rappresenta gli hotel per quella città.
                     int stringHotels_length = ClientMain.readIntegerFromServer(server);
-                    ConsoleManage.synchronizedPrint("[searchHotel] Lunghezza stringa ricevuta: " + stringHotels_length);
                     // Ricevo dal server la sequenza di byte che corrisponde alla stringa che rappresenta l'insieme di hotel.
                     byte[] byteStringHotel = ClientMain.readStringFromServer(server, stringHotels_length);
                     String temp = new String(byteStringHotel);
@@ -422,20 +414,19 @@ public class ClientMain {
             return;
         }
         // Ricevo da riga di comando il nome dell'hotel.
-        String nomeHotel = ClientMain.readString(scanner, "hotel name");
+        String hotelName = ClientMain.readString(scanner, "hotel name");
         // Ricevo da riga di comando la città dell'hotel.
-        String citta = ClientMain.readString(scanner, "city");
+        String city = ClientMain.readString(scanner, "city");
         // Ricevo da riga di comando i voti della recensione.
         int[] scores = ClientMain.readScoresReview(scanner);
         // Invio al server: l'operazione che voglio eseguire, il nome dell'hotel, la citta, i voti.
         int[] integers = new int[6];
         integers[0] = operation;
         System.arraycopy(scores, 0, integers, 1, scores.length);
-        ClientMain.writeToServer(server, integers, new String[] {nomeHotel, citta});
+        ClientMain.writeToServer(server, integers, new String[] {hotelName, city});
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
         // Stampo il risultato.
-        ConsoleManage.synchronizedPrint("[Insert Review] codice ricevuto: "+code+"\n");
         switch(code){
             case 0: ConsoleManage.synchronizedPrint("Review correctly added.\n----------------------------------------------\n");
                     break;
@@ -470,7 +461,6 @@ public class ClientMain {
         // Ricevo dal server l'output dell'operazione richiesta.
         int code = ClientMain.readIntegerFromServer(server);
         // Stampo il risultato.
-        ConsoleManage.synchronizedPrint("[Insert Review] codice ricevuto: "+code);
         switch(code){
             case 0: ConsoleManage.synchronizedPrint("Badge correctly received.\n----------------------------------------------\n");
                     // Ricevo dal server la lunghezza della stringa che rappresenta il badge.
@@ -521,8 +511,6 @@ public class ClientMain {
                 Scanner scanner = new Scanner(System.in);
                 // Cattura dell'operazione richiesta dall'utente.
                 int operation = ClientMain.readOperation(scanner); // Operazione richiesta dal utente.
-
-                ConsoleManage.synchronizedPrint("Hai chiesto l'operazione: " + operation + "\n");
                 
                 switch(operation) {
                 
