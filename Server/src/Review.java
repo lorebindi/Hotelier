@@ -20,10 +20,6 @@ public class Review {
         this.timestamp = Instant.now().getEpochSecond();
     }
 
-    public static int getLastId() {
-        return id;
-    }
-    
     public int getId() {
         return this.id;
     }
