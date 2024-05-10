@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -28,6 +29,7 @@ public class ServerMain {
     private static ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(N_THREAD); // ThreadPool utilizzato per la scrittura su file di Hotels e Users.
     private static final int WAITING_SECONDS_RANKING_RECALCULATION = Integer.parseInt(ServerFileConfigurationReader.get_Waiting_Seconds_Ranking_Recalculation()); // Minuti che intervallano i task di scrittura su file di Hotel e Users.
     private static final int WAITING_SECONDS_FILE_UPDATE = Integer.parseInt(ServerFileConfigurationReader.get_Waiting_Seconds_File_Update());
+    private static AtomicBoolean stop = new AtomicBoolean(false);
 
 
     /**
@@ -755,8 +757,12 @@ public class ServerMain {
             serverChannel.configureBlocking(false);
             selector = Selector.open();
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+            // Partenza del thread per terminare il server
+            Scanner scanner = new Scanner(System.in);
+            Thread listeningStopRequest = new Thread(new StopServerTask(ServerMain.stop, scanner, selector));
+            listeningStopRequest.start();
         
-            while (true) {
+            while (!ServerMain.stop.get()) {
                 try {
                     selector.select();
                 } 
@@ -768,7 +774,7 @@ public class ServerMain {
                 Set <SelectionKey> readyKeys = selector.selectedKeys();
                 Iterator <SelectionKey> iterator = readyKeys.iterator();
 
-                while (iterator.hasNext()) {
+                while (iterator.hasNext() && !ServerMain.stop.get()) {
                     SelectionKey key = iterator.next();
                     iterator.remove(); // rimuove la chiave dal Selected Set, ma non dal Registered Set
                     try {
@@ -963,14 +969,29 @@ public class ServerMain {
                 
                 }
             }
+
+            try{
+                // Aspetto la terminazione del StopServerTask
+                listeningStopRequest.join();
+            }
+            catch (InterruptedException e){
+                System.out.println("Errore chiusura thread StopServer.");
+            }
         }
         catch (IOException ex) {
             ex.printStackTrace();
         }
         finally {
-            // Chiudo il 
+            // Chiusura dello scheduledThreadPool
             ServerMain.scheduledThreadPool.shutdown();
-            System.out.println("Server terminato.");
+            try{
+                if(!ServerMain.scheduledThreadPool.awaitTermination(5, TimeUnit.SECONDS))
+                    scheduledThreadPool.shutdownNow();
+            }
+            catch (InterruptedException e) {
+                scheduledThreadPool.shutdownNow();
+            }
+            System.out.println("Server terminated.");
         }
         
     }

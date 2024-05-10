@@ -76,7 +76,7 @@ public class UpdateRankingsTask implements Runnable {
     public void run(){
         // Ricalcolo il ranking per ogni città e mi restituisce tutti gli ex-primi hotel di ogni città. 
         HashMap<String, String> oldBestHotel = this.rankingRecalculation();
-        System.out.println("Ranking ricalcolato.\n");
+        System.out.println("Ranking recalculated.\n");
         // Invio messaggio UDP al gruppo multicast per ogni primo hotel di ogni città cambiato.
         this.sendUdpMessagge(oldBestHotel);   
     }

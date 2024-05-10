@@ -3,7 +3,13 @@
     "username": "lore",
     "hashedPassword": "$2a$10$UuPIHDEjWdAlH7mWIkdbLutUK5NbmJrHKAFmeJyWNKkDoV0HYF4VS",
     "badge": "Recensore",
-    "nRecensioni": 1
+    "nRecensioni": 4
+  },
+  {
+    "username": "pippo",
+    "hashedPassword": "$2a$10$10fv6jVrY.MYW41s3t/nP.u06Qetq4lLrNx2rLwLPMVxsuLKQpoUm",
+    "badge": "Recensore",
+    "nRecensioni": 0
   },
   {
     "username": "Pluto",

@@ -1295,8 +1295,17 @@
       "Piscina",
       "TV in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 3,
+        "serviceVote": 4,
+        "priceVote": 4,
+        "timestamp": 1715359354
+      }
+    },
+    "weightedAverageReviews": 3.6
   },
   {
     "id": "123",
@@ -2846,15 +2855,15 @@
     ],
     "ratings": {
       "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715272909
+        "overallVote": 4,
+        "positionVote": 5,
+        "cleanlinessVote": 4,
+        "serviceVote": 5,
+        "priceVote": 4,
+        "timestamp": 1715358760
       }
     },
-    "weightedAverageReviews": 0.0
+    "weightedAverageReviews": 4.4
   },
   {
     "id": "18",
@@ -2866,8 +2875,17 @@
       "TV in camera",
       "Palestra"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 5,
+        "positionVote": 5,
+        "cleanlinessVote": 5,
+        "serviceVote": 4,
+        "priceVote": 4,
+        "timestamp": 1715358819
+      }
+    },
+    "weightedAverageReviews": 4.6
   },
   {
     "id": "19",
