@@ -2,6 +2,9 @@ import java.nio.channels.Selector;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Si tratta della classe utilizzata per una terminazione corretta del server.
+ */
 public class StopServerTask implements Runnable{
     private static AtomicBoolean stop = new AtomicBoolean(false);
     private static Scanner scanner;
