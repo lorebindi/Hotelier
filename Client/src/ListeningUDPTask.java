@@ -43,7 +43,6 @@ public class ListeningUDPTask implements Runnable{
             // Il canale è stato chiuso quindi il client non può più ricevere messaggi UDP.
             socket.leaveGroup(group);
             socket.close();
-            ConsoleManage.synchronizedPrint("[Listening UDP Thread] Finished.\n");
         } catch (IOException ex) {
             ConsoleManage.synchronizedErrPrint("Error in ListeningUDPTask: " + ex.getMessage()+"\n");
         }

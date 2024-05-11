@@ -557,7 +557,8 @@ public class ClientMain {
         catch (IOException ex) {
             ConsoleManage.synchronizedErrPrint(ex.toString());
         }
-    
+
+        ConsoleManage.synchronizedPrint("Client Terminated.");
     }
 }
         
