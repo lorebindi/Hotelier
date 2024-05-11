@@ -81,16 +81,7 @@
       "Cancellazione gratuita",
       "Piscina"
     ],
-    "ratings": {
-      "3": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434470
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -179,24 +170,7 @@
       "Palestra",
       "Cancellazione gratuita"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706435333
-      },
-      "3": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706435491
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -210,16 +184,7 @@
       "Cancellazione gratuita",
       "Wi-Fi"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1714808552
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -236,40 +201,7 @@
       "Frigo in camera",
       "TV in camera"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434710
-      },
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1707475252
-      },
-      "3": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1707475398
-      },
-      "4": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1707475531
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -279,32 +211,7 @@
     "city": "Aosta",
     "phone": "393-2959804",
     "services": [],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715095648
-      },
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706435389
-      },
-      "4": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434586
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -314,16 +221,7 @@
     "city": "Aosta",
     "phone": "392-3923265",
     "services": [],
-    "ratings": {
-      "5": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434621
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -343,24 +241,16 @@
       "Frigo in camera"
     ],
     "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706436208
-      },
       "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706436258
+        "overallVote": 5,
+        "positionVote": 4,
+        "cleanlinessVote": 3,
+        "serviceVote": 4,
+        "priceVote": 2,
+        "timestamp": 1715441409
       }
     },
-    "weightedAverageReviews": 0.0
+    "weightedAverageReviews": 3.6
   },
   {
     "id": "6",
@@ -384,16 +274,7 @@
       "Palestra",
       "Cancellazione gratuita"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1707565730
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -943,8 +824,17 @@
     "city": "Firenze",
     "phone": "339-6787075",
     "services": [],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "3": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 5,
+        "serviceVote": 5,
+        "priceVote": 4,
+        "timestamp": 1715441435
+      }
+    },
+    "weightedAverageReviews": 4.2
   },
   {
     "id": "83",
@@ -994,16 +884,7 @@
       "Piscina",
       "Wi-Fi"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715098423
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1016,16 +897,7 @@
       "Servizio in camera",
       "Wi-Fi"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715094026
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1090,16 +962,7 @@
     "city": "Genova",
     "phone": "343-6958486",
     "services": [],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1714808862
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1116,16 +979,7 @@
       "Sauna",
       "Cancellazione gratuita"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715095822
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1137,16 +991,7 @@
     "services": [
       "Paga in struttura"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434455
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1243,16 +1088,16 @@
       "Cancellazione gratuita"
     ],
     "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1714812834
+      "4": {
+        "overallVote": 4,
+        "positionVote": 3,
+        "cleanlinessVote": 2,
+        "serviceVote": 2,
+        "priceVote": 2,
+        "timestamp": 1715441491
       }
     },
-    "weightedAverageReviews": 0.0
+    "weightedAverageReviews": 2.6
   },
   {
     "id": "121",
@@ -1295,17 +1140,8 @@
       "Piscina",
       "TV in camera"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 3,
-        "positionVote": 4,
-        "cleanlinessVote": 3,
-        "serviceVote": 4,
-        "priceVote": 4,
-        "timestamp": 1715359354
-      }
-    },
-    "weightedAverageReviews": 3.6
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "123",
@@ -1643,16 +1479,7 @@
       "Sauna",
       "Posto auto"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1707475207
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1800,16 +1627,7 @@
       "Cancellazione gratuita",
       "Posto auto"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706731077
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1825,16 +1643,7 @@
       "Servizio in camera",
       "Palestra"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706725928
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -1863,16 +1672,7 @@
       "Cancellazione gratuita",
       "Piscina"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706731158
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -2570,16 +2370,7 @@
       "Cancellazione gratuita",
       "Piscina"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715272192
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -2593,16 +2384,7 @@
       "Frigo in camera",
       "Posto auto"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706434420
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -2612,16 +2394,7 @@
     "city": "Roma",
     "phone": "332-1286644",
     "services": [],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1715100542
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -2653,16 +2426,7 @@
       "Cancellazione gratuita",
       "Paga in struttura"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1706537521
-      }
-    },
+    "ratings": {},
     "weightedAverageReviews": 0.0
   },
   {
@@ -2688,15 +2452,15 @@
     "services": [],
     "ratings": {
       "1": {
-        "overallVote": 0,
-        "positionVote": 0,
-        "cleanlinessVote": 0,
-        "serviceVote": 0,
-        "priceVote": 0,
-        "timestamp": 1714821218
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 3,
+        "serviceVote": 3,
+        "priceVote": 3,
+        "timestamp": 1715441375
       }
     },
-    "weightedAverageReviews": 0.0
+    "weightedAverageReviews": 3.0
   },
   {
     "id": "118",
@@ -2853,17 +2617,8 @@
       "Palestra",
       "Cancellazione gratuita"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 4,
-        "positionVote": 5,
-        "cleanlinessVote": 4,
-        "serviceVote": 5,
-        "priceVote": 4,
-        "timestamp": 1715358760
-      }
-    },
-    "weightedAverageReviews": 4.4
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "18",
@@ -2875,17 +2630,8 @@
       "TV in camera",
       "Palestra"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 5,
-        "positionVote": 5,
-        "cleanlinessVote": 5,
-        "serviceVote": 4,
-        "priceVote": 4,
-        "timestamp": 1715358819
-      }
-    },
-    "weightedAverageReviews": 4.6
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "19",

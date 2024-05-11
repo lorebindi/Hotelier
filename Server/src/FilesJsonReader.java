@@ -33,13 +33,18 @@ public class FilesJsonReader{
             reader = Files.newBufferedReader(Paths.get(FilesJsonReader.END_FILE_HOTELS_PATH).toAbsolutePath().normalize());
             // Leggo gli hotel dal file json e li inserisco in un ArrayList.
             ArrayList<Hotel> hotelsArray = new Gson().fromJson(reader, new TypeToken<List<Hotel>>() {}.getType());
-            // Inserisco gli hotel nella ConcurrentHashMap
-            ConcurrentHashMap<String,Hotel> hotels = new ConcurrentHashMap<>(hotelsArray.size());
-            for(Hotel hotel : hotelsArray) {
-                hotels.put(hotel.getId(), new Hotel(hotel.getId(), hotel.getName(), hotel.getDescription(),
-                        hotel.getCity(),hotel.getPhone(), hotel.getServices(), hotel.getRatings()));
+            if(hotelsArray == null || hotelsArray.isEmpty()) {
+                throw new IOException("Empty file");
             }
-            return hotels;
+            else {
+                // Inserisco gli hotel nella ConcurrentHashMap
+                ConcurrentHashMap<String, Hotel> hotels = new ConcurrentHashMap<>(hotelsArray.size());
+                for (Hotel hotel : hotelsArray) {
+                    hotels.put(hotel.getId(), new Hotel(hotel.getId(), hotel.getName(), hotel.getDescription(),
+                            hotel.getCity(), hotel.getPhone(), hotel.getServices(), hotel.getRatings()));
+                }
+                return hotels;
+            }
         }
         catch (IOException ex) { // Se ho problemi ad aprire il primo file apro il secondo.
             try{
