@@ -977,6 +977,8 @@ public class ServerMain {
             catch (InterruptedException e){
                 System.out.println("Errore chiusura thread StopServer.");
             }
+
+            serverChannel.close();
         }
         catch (IOException ex) {
             ex.printStackTrace();
