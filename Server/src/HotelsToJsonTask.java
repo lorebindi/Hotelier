@@ -29,7 +29,7 @@ public class HotelsToJsonTask implements Runnable{
             String jsonString = gson.toJson(hotelsList);
             // Scrittura del JSON nel file.
             writer.write(jsonString);
-            System.out.println("Hotels saved on file");
+            System.out.println("Hotels saved on file\n");
         } catch (IOException ex) {
             System.err.println("I/O error from hotelToJson function.");
         }
