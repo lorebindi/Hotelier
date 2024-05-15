@@ -4,17 +4,20 @@ import java.net.MulticastSocket;
 import java.net.SocketTimeoutException;
 import java.nio.channels.*;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ListeningUDPTask implements Runnable{
     
     private static final String MULTICAST_GROUP = ClientFileConfigurationReader.getClientMulticastAddress(); // Indirizzo di multicast.
     private static final int MULTICAST_PORT = Integer.parseInt(ClientFileConfigurationReader.getClientMulticastPort()); // Porta di multicast
     private final SocketChannel server; // SocketChannel aperto per la comunicazione client-server: appena questo viene chiuso il task deve terminare.
+    private static AtomicBoolean logged;
 
     private final int timeout = ClientFileConfigurationReader.getClientTimeout(); // timeout in millisecondi
     
-    public ListeningUDPTask(SocketChannel server) {
+    public ListeningUDPTask(SocketChannel server, AtomicBoolean logged) {
         this.server = server;
+        this.logged = logged;
     }
 
     public void run() {
@@ -30,7 +33,8 @@ public class ListeningUDPTask implements Runnable{
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                     socket.receive(packet); // Questa chiamata lancia una SocketTimeoutException dopo il timeout
                     String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
-                    ConsoleManage.synchronizedPrint("[Multicast UDP message received] >> " + msg);
+                    if(ListeningUDPTask.logged.get())
+                        ConsoleManage.synchronizedPrint("[Multicast UDP message received] >> " + msg);
                 } catch (SocketTimeoutException e) {
                     /* Il timeout è scaduto ma non è stato ricevuto alcun pacchetto
                     Questo blocco viene utilizzato per controllare periodicamente che il server non sia stato chiuso.

@@ -250,7 +250,7 @@
         "timestamp": 1715441409
       }
     },
-    "weightedAverageReviews": 3.6
+    "weightedAverageReviews": 3.5523185825059045
   },
   {
     "id": "6",
@@ -834,7 +834,7 @@
         "timestamp": 1715441435
       }
     },
-    "weightedAverageReviews": 4.2
+    "weightedAverageReviews": 4.144371679590222
   },
   {
     "id": "83",
@@ -1097,7 +1097,7 @@
         "timestamp": 1715441491
       }
     },
-    "weightedAverageReviews": 2.6
+    "weightedAverageReviews": 2.565563420698709
   },
   {
     "id": "121",
@@ -1494,8 +1494,17 @@
       "Sauna",
       "Wi-Fi"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 4,
+        "positionVote": 4,
+        "cleanlinessVote": 4,
+        "serviceVote": 4,
+        "priceVote": 4,
+        "timestamp": 1715807199
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "145",
@@ -1729,8 +1738,17 @@
       "Paga in struttura",
       "Servizio in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 4,
+        "positionVote": 4,
+        "cleanlinessVote": 4,
+        "serviceVote": 4,
+        "priceVote": 4,
+        "timestamp": 1715807329
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "91",
@@ -1913,8 +1931,17 @@
       "Paga in struttura",
       "Piscina"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 1,
+        "positionVote": 1,
+        "cleanlinessVote": 1,
+        "serviceVote": 1,
+        "priceVote": 1,
+        "timestamp": 1715807421
+      }
+    },
+    "weightedAverageReviews": 1.0
   },
   {
     "id": "170",
@@ -1940,8 +1967,17 @@
       "Wi-Fi",
       "Sauna"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 1,
+        "positionVote": 1,
+        "cleanlinessVote": 1,
+        "serviceVote": 2,
+        "priceVote": 2,
+        "timestamp": 1715807510
+      }
+    },
+    "weightedAverageReviews": 1.4
   },
   {
     "id": "163",
@@ -1953,8 +1989,17 @@
       "Posto auto",
       "Servizio in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 3,
+        "serviceVote": 3,
+        "priceVote": 3,
+        "timestamp": 1715807607
+      }
+    },
+    "weightedAverageReviews": 3.0
   },
   {
     "id": "164",
@@ -2460,7 +2505,7 @@
         "timestamp": 1715441375
       }
     },
-    "weightedAverageReviews": 3.0
+    "weightedAverageReviews": 2.960265485421587
   },
   {
     "id": "118",

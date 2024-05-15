@@ -4,12 +4,14 @@ import java.net.*;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientMain {
 
     public static final String Ip = ClientFileConfigurationReader.getClientIp();
     public static final int DEFAULT_PORT = ClientFileConfigurationReader.getClientPort();
     public static String username = "";
+    public static AtomicBoolean logged = new AtomicBoolean(false);
 
     /**
      * Metodo che scrive un insieme di interi e stringhe al server tramite SocketChannel.
@@ -282,6 +284,7 @@ public class ClientMain {
         switch(code){
             case 0: ConsoleManage.synchronizedPrint("Login successfully.\n----------------------------------------------\n");
                     ClientMain.username = username;
+                    ClientMain.logged.set(true);
                     break;
             case -1:ConsoleManage.synchronizedPrint("User already logged in.\n----------------------------------------------\n");
                     break;
@@ -314,6 +317,7 @@ public class ClientMain {
         switch(code){
             case 0: ConsoleManage.synchronizedPrint("Logout successfully.\n----------------------------------------------\n");
                     ClientMain.username = "";
+                    ClientMain.logged.set(false);
                     break;
             case -1:ConsoleManage.synchronizedPrint("Unable to logout because no login was made.\n----------------------------------------------\n");
                     break;
@@ -503,7 +507,7 @@ public class ClientMain {
             SocketAddress address = new InetSocketAddress(InetAddress.getByName(ClientMain.Ip),ClientMain.DEFAULT_PORT);
             SocketChannel server = SocketChannel.open(address);
             // Faccio partire il thread in ascolto per messaggi UDP.
-            Thread listeningUDPThread = new Thread(new ListeningUDPTask(server));
+            Thread listeningUDPThread = new Thread(new ListeningUDPTask(server, ClientMain.logged));
             listeningUDPThread.start();
             // Finché il canale con il server è aperto.
             while (server.isOpen()) {
