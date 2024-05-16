@@ -900,6 +900,20 @@ public class ServerMain {
             System.out.println("Unexepcted error occurred: " + e +" "+ e.getMessage() + "\n");
         }
         finally {
+            // Chiudi tutte le conessioni attive
+            for(SelectionKey key : selector.keys()){
+                if (key.isValid() && key.channel() instanceof SocketChannel) {
+                    SocketChannel channel = (SocketChannel) key.channel();
+                    if(channel.isOpen() && channel.isConnected()) {
+                        try{
+                            channel.close();
+                        }
+                        catch(IOException e) {
+                            System.out.println("Error closing socket channel: " + e);
+                        }
+                    }
+                }
+            }
             // Chiudo il ServerSocketChannel
             if (serverSocketChannel.isOpen()) {
                 try {
@@ -907,6 +921,12 @@ public class ServerMain {
                 } catch (IOException e) {
                     System.out.println("Error closing server channel: " + e);
                 }
+            }
+            // Chiudo il selector
+            try {
+                selector.close();
+            } catch (IOException e) {
+                System.out.println("Error closing selector: " + e);
             }
             // Aspetto la terminazione del StopServerTask
             try {

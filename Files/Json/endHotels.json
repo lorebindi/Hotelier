@@ -373,8 +373,17 @@
       "Wi-Fi",
       "TV in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 2,
+        "positionVote": 3,
+        "cleanlinessVote": 4,
+        "serviceVote": 1,
+        "priceVote": 1,
+        "timestamp": 1715879391
+      }
+    },
+    "weightedAverageReviews": 2.2
   },
   {
     "id": "154",
