@@ -132,10 +132,6 @@ public class ServerMain {
                 }
                 return -5;
             }
-            // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
-            while (inputBuffer.hasRemaining()) {
-                nBytesRead += client.read(inputBuffer);
-            }
             inputBuffer.flip();
             // ritorno l'intero ricevuto
             return inputBuffer.getInt();
@@ -173,10 +169,6 @@ public class ServerMain {
                     System.err.println("Error closing client channel: " + closeEx.getMessage());
                 }
                 return new byte[1];
-            }
-            // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
-            while (inputBuffer.hasRemaining()) {
-                nBytesRead += client.read(inputBuffer);
             }
             // Prendo i byte dal ByteBuffer
             inputBuffer.flip();
@@ -437,7 +429,7 @@ public class ServerMain {
         String username = new String(stringBytes);
 
         // Controllo che l'utente non sia già loggato.
-        if(key.attachment() != null) {
+        if(key.attachment() == null) {
             key.attach(new ObjectAttach());
             return -1; // L'utente non è loggato.
         }

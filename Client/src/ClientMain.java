@@ -19,9 +19,8 @@ public class ClientMain {
      * @param integers Un array di interi che include i dati da inviare. Il primo intero è sempre
      *                 il codice dell'operazione da eseguire sul server.
      * @param strings Un array di stringhe i cui dati vengono inviati al server.
-     * @throws IOException
      */
-    private static void writeToServer (SocketChannel server, int[] integers, String[] strings) throws IOException{
+    private static boolean writeToServer (SocketChannel server, int[] integers, String[] strings) {
         
         // Calcola il numero di byte necessari per gli interi
         int nBytes = integers.length * Integer.BYTES;
@@ -54,18 +53,19 @@ public class ClientMain {
             outputBuffer.flip();
             while (outputBuffer.hasRemaining()) {
                 bytesWritten = server.write(outputBuffer);
-                if (bytesWritten == -1) 
+                if (bytesWritten == -1)
                     break;
             }
-        } catch (ClosedChannelException cce) {
-            // Il canale è chiuso dal lato server.
-            server.close();
-            throw new ClosedChannelException();
+            return true;
         }
         catch (IOException e) {
-            throw new IOException();
+            try {
+                server.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing server channel: " + closeEx.getMessage());
+            }
+            return false;
         }
-         
     }
 
     /**
@@ -74,29 +74,36 @@ public class ClientMain {
      * @return
      * @throws IOException
      */
-    private static int readIntegerFromServer(SocketChannel server) throws IOException {
+    private static int readIntegerFromServer(SocketChannel server) {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(Integer.BYTES);
             // Ricevo il codice dal server.
             int nBytesRead = server.read(inputBuffer);
+            // Controllo che il canale non sia stato chiuso.
             if(nBytesRead == -1 || !server.isOpen()) {
-                server.close(); // Chiudo il canale.
+                try {
+                    server.close();
+                } catch (IOException closeEx) {
+                    System.err.println("Error closing client channel: " + closeEx.getMessage());
+                }
                 return -5;
             }
             // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
             while (inputBuffer.hasRemaining()) {
                 nBytesRead += server.read(inputBuffer);
-                if(nBytesRead == -1 || !server.isOpen()) {
-                    server.close(); // Chiudo il canale.
-                    return -5;
-                }
             }
             inputBuffer.flip();
-            int integer = inputBuffer.getInt();
-            return integer;
+            // ritorno l'intero ricevuto
+            return inputBuffer.getInt();
         }
         catch (IOException e) {
-            throw new IOException();
+            System.err.println("Error reading integer from server: " + e.getMessage());
+            try {
+                server.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing client channel: " + closeEx.getMessage());
+            }
+            return -5;
         }
     }
 
@@ -110,31 +117,39 @@ public class ClientMain {
      *                di lunghezza 1 in caso di errore.
      * @throws IOException
      */
-    private static byte[] readStringFromServer(SocketChannel server, int nByteToRead) throws IOException {
+    private static byte[] readStringFromServer(SocketChannel server, int nByteToRead) {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(nByteToRead);
             // Ricevo il codice dal server.
             int nBytesRead = server.read(inputBuffer);
+            // Controllo che il canale non sia stato chiuso.
             if(nBytesRead == -1 || !server.isOpen()) {
-                server.close(); // Chiudo il canale.
+                try {
+                    server.close();
+                } catch (IOException closeEx) {
+                    System.err.println("Error closing client channel: " + closeEx.getMessage());
+                }
                 return new byte[1];
             }
             // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
-            while (inputBuffer.hasRemaining() ) {
+            while (inputBuffer.hasRemaining()) {
                 nBytesRead += server.read(inputBuffer);
-                if(nBytesRead == -1 || !server.isOpen()) {
-                    server.close(); // Chiudo il canale.
-                    return new byte[1];
-                }
             }
             // Prendo i byte dal ByteBuffer
             inputBuffer.flip();
             byte[] bytesReceived = new byte[nByteToRead];
             inputBuffer.get(bytesReceived);
+            // Ritorno i bytes ricevuti
             return bytesReceived;
         }
         catch (IOException e) {
-            throw new IOException();
+            System.err.println("Error reading integer from client: " + e.getMessage());
+            try {
+                server.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing client channel: " + closeEx.getMessage());
+            }
+            return new byte[1];
         }
     }
 
@@ -236,27 +251,27 @@ public class ClientMain {
      * @param server Il SocketChannel per comunicare con il server.
      * @param operation Il codice dell'operazione registrazione.
      * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
-     * @throws IOException
      */
-    private static void registration (SocketChannel server,int operation, Scanner scanner) throws IOException {
+    private static void registration (SocketChannel server,int operation, Scanner scanner) {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Ricevo username e password da riga di comando
         String username = ClientMain.readString(scanner, "username");
         String password = ClientMain.readString(scanner, "password");
         // Invio al server: l'operazione che voglio eseguire, username e password.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{username, password});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato
-        switch (code) {
-            case 0: ConsoleManage.synchronizedPrint("Registration completed.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[]{operation}, new String[]{username, password})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato
+            switch (code) {
+                case 0: ConsoleManage.synchronizedPrint("Registration completed.\n----------------------------------------------\n");
                     break;
-            case 1: ConsoleManage.synchronizedPrint("Username already used. \n----------------------------------------------\n");
+                case 1: ConsoleManage.synchronizedPrint("Username already used. \n----------------------------------------------\n");
                     break;
-            case -1: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
-                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -1: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                    break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
     }
 
@@ -268,36 +283,36 @@ public class ClientMain {
      * @param server Il SocketChannel per comunicare con il server.
      * @param operation Il codice del login.
      * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
-     * @throws IOException
      */
-    private static void login (SocketChannel server,int operation, Scanner scanner) throws IOException {
+    private static void login (SocketChannel server,int operation, Scanner scanner) {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando dell'username.
         String username = ClientMain.readString(scanner, "username");
         // Lettura da riga di comando della password.
         String password = ClientMain.readString(scanner, "password");
         // Invio al server: l'operazione che voglio eseguire, username e password.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{username, password});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato.
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Login successfully.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[]{operation}, new String[]{username, password})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato.
+            switch(code){
+                case 0: ConsoleManage.synchronizedPrint("Login successfully.\n----------------------------------------------\n");
                     ClientMain.username = username;
                     ClientMain.logged.set(true);
                     break;
-            case -1:ConsoleManage.synchronizedPrint("User already logged in.\n----------------------------------------------\n");
+                case -1:ConsoleManage.synchronizedPrint("User already logged in.\n----------------------------------------------\n");
                     break;
-            case -2:ConsoleManage.synchronizedPrint("Non-existent username.\n----------------------------------------------\n");
+                case -2:ConsoleManage.synchronizedPrint("Non-existent username.\n----------------------------------------------\n");
                     break;
-            case -3:ConsoleManage.synchronizedPrint("Invalid password.\n----------------------------------------------\n");
+                case -3:ConsoleManage.synchronizedPrint("Invalid password.\n----------------------------------------------\n");
                     break;
-            case -4:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -4:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
-        
+
     }
 
     /**
@@ -305,28 +320,33 @@ public class ClientMain {
      * codice dell'operazione, l'username dell'utente, attende l'esito dell'operazione e la stampa.
      * @param server Il SocketChannel per comunicare con il server.
      * @param operation Il codice dell'logout.
-     * @throws IOException
      */
-    private static void logout (SocketChannel server,int operation) throws IOException{
+    private static void logout (SocketChannel server,int operation) {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Invio al server: l'operazione che voglio eseguire e l'username.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{ClientMain.username});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato.
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Logout successfully.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[]{operation}, new String[]{ClientMain.username})) {
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato.
+            switch (code) {
+                case 0:
+                    ConsoleManage.synchronizedPrint("Logout successfully.\n----------------------------------------------\n");
                     ClientMain.username = "";
                     ClientMain.logged.set(false);
                     break;
-            case -1:ConsoleManage.synchronizedPrint("Unable to logout because no login was made.\n----------------------------------------------\n");
+                case -1:
+                    ConsoleManage.synchronizedPrint("Unable to logout because no login was made.\n----------------------------------------------\n");
                     break;
-            case -2:ConsoleManage.synchronizedPrint("Username provided is different from login username.\n----------------------------------------------\n");
+                case -2:
+                    ConsoleManage.synchronizedPrint("Username provided is different from login username.\n----------------------------------------------\n");
                     break;
-            case -3:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -3:
+                    ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -5:
+                    ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
     }
 
@@ -339,31 +359,32 @@ public class ClientMain {
      * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
      * @throws IOException
      */
-    private static void searchHotel (SocketChannel server,int operation, Scanner scanner) throws IOException{
+    private static void searchHotel (SocketChannel server,int operation, Scanner scanner) {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando del nome dell'hotel e della città.
         String hotelName = ClientMain.readString(scanner, "name hotel");
         String city = ClientMain.readString(scanner, "city");
         // Invio al server: l'operazione che voglio eseguire e l'username.
-        ClientMain.writeToServer(server, new int[]{operation}, new String[]{hotelName, city});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Search hotel successfully.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[]{operation}, new String[]{hotelName, city})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            switch(code){
+                case 0: ConsoleManage.synchronizedPrint("Search hotel successfully.\n----------------------------------------------\n");
                     // Ricevo dal server la lunghezza della stringa che rappresenta l'hotel.
                     int stringHotel_length = ClientMain.readIntegerFromServer(server);
                     // Ricevo dal server la sequenza di byte che corrisponde alla stringa che rappresenta l'hotel.
                     byte[] byteStringHotel = ClientMain.readStringFromServer(server, stringHotel_length);
                     ConsoleManage.synchronizedPrint(new String(byteStringHotel) + ".\n----------------------------------------------\n");
                     break;
-            case -1:ConsoleManage.synchronizedPrint("Non-existent hotel.\n----------------------------------------------\n");
+                case -1:ConsoleManage.synchronizedPrint("Non-existent hotel.\n----------------------------------------------\n");
                     break;
-            case -2:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -2:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
-        
+
     }
 
     /**
@@ -375,17 +396,17 @@ public class ClientMain {
      * @param scanner Lo Scanner utilizzato per leggere l'input dell'utente.
      * @throws IOException
      */
-    private static void searchHotels (SocketChannel server,int operation, Scanner scanner) throws IOException {
+    private static void searchHotels (SocketChannel server,int operation, Scanner scanner) {
         ConsoleManage.synchronizedPrint("----------------------------------------------\n");
         // Lettura da riga di comando della città.
         String city = ClientMain.readString(scanner, "city");
         // Invio al server: l'operazione che voglio eseguire e la citta.
-        ClientMain.writeToServer(server, new int[] {operation}, new String[] {city});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Search hotels successfully.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[] {operation}, new String[] {city})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato
+            switch(code){
+                case 0: ConsoleManage.synchronizedPrint("Search hotels successfully.\n----------------------------------------------\n");
                     // Ricevo dal server la lunghezza della stringa che rappresenta gli hotel per quella città.
                     int stringHotels_length = ClientMain.readIntegerFromServer(server);
                     // Ricevo dal server la sequenza di byte che corrisponde alla stringa che rappresenta l'insieme di hotel.
@@ -393,13 +414,15 @@ public class ClientMain {
                     String temp = new String(byteStringHotel);
                     ConsoleManage.synchronizedPrint(new String(byteStringHotel) + ".\n----------------------------------------------\n");
                     break;
-            case -1:ConsoleManage.synchronizedPrint("Non-existent hotel in that city.\n----------------------------------------------\n");
+                case -1:ConsoleManage.synchronizedPrint("Non-existent hotel in that city.\n----------------------------------------------\n");
                     break;
-            case -2:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -2:ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
+
     }
 
     /**
@@ -427,23 +450,23 @@ public class ClientMain {
         int[] integers = new int[6];
         integers[0] = operation;
         System.arraycopy(scores, 0, integers, 1, scores.length);
-        ClientMain.writeToServer(server, integers, new String[] {hotelName, city});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato.
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Review correctly added.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, integers, new String[] {hotelName, city})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato.
+            switch(code){
+                case 0: ConsoleManage.synchronizedPrint("Review correctly added.\n----------------------------------------------\n");
                     break;
-            case -1: ConsoleManage.synchronizedPrint("To review a hotel you must be logged in.\n----------------------------------------------\n");
+                case -1: ConsoleManage.synchronizedPrint("To review a hotel you must be logged in.\n----------------------------------------------\n");
                     break;
-            case -2: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -2: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -3: ConsoleManage.synchronizedPrint("Inexistent hotel.\n----------------------------------------------\n");
-                break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -3: ConsoleManage.synchronizedPrint("Inexistent hotel.\n----------------------------------------------\n");
+                    break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
-        
     }
 
     /**
@@ -461,25 +484,27 @@ public class ClientMain {
             ConsoleManage.synchronizedPrint("To receive a badge you must be logged in.\n----------------------------------------------\n");
             return;
         }
-        ClientMain.writeToServer(server, new int[] {operation}, new String[] {ClientMain.username});
-        // Ricevo dal server l'output dell'operazione richiesta.
-        int code = ClientMain.readIntegerFromServer(server);
-        // Stampo il risultato.
-        switch(code){
-            case 0: ConsoleManage.synchronizedPrint("Badge correctly received.\n----------------------------------------------\n");
+        if(ClientMain.writeToServer(server, new int[] {operation}, new String[] {ClientMain.username})){
+            // Ricevo dal server l'output dell'operazione richiesta.
+            int code = ClientMain.readIntegerFromServer(server);
+            // Stampo il risultato.
+            switch(code){
+                case 0: ConsoleManage.synchronizedPrint("Badge correctly received.\n----------------------------------------------\n");
                     // Ricevo dal server la lunghezza della stringa che rappresenta il badge.
                     int stringBadge_length = ClientMain.readIntegerFromServer(server);
                     // Ricevo dal server la sequenza di byte che corrisponde alla stringa che rappresenta il badge.
                     byte[] byteStringBadge = ClientMain.readStringFromServer(server, stringBadge_length);
                     ConsoleManage.synchronizedPrint("Yours badge: " + new String(byteStringBadge) + ".\n----------------------------------------------\n");
                     break;
-            case -1: ConsoleManage.synchronizedPrint("To receive a badge you must be logged in.\n----------------------------------------------\n");
+                case -1: ConsoleManage.synchronizedPrint("To receive a badge you must be logged in.\n----------------------------------------------\n");
                     break;
-            case -2: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
+                case -2: ConsoleManage.synchronizedPrint("Server error.\n----------------------------------------------\n");
                     break;
-            case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
-                     break;
+                case -5: ConsoleManage.synchronizedPrint("Connection interrupted by the server.\n----------------------------------------------\n");
+                    break;
+            }
         }
+
     }
 
     /**

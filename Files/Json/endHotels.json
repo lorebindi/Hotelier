@@ -68,8 +68,17 @@
       "Frigo in camera",
       "Palestra"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "3": {
+        "overallVote": 2,
+        "positionVote": 2,
+        "cleanlinessVote": 2,
+        "serviceVote": 2,
+        "priceVote": 2,
+        "timestamp": 1715878584
+      }
+    },
+    "weightedAverageReviews": 2.0
   },
   {
     "id": "104",
@@ -201,8 +210,17 @@
       "Frigo in camera",
       "TV in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 3,
+        "serviceVote": 3,
+        "priceVote": 3,
+        "timestamp": 1715877365
+      }
+    },
+    "weightedAverageReviews": 3.0
   },
   {
     "id": "3",
@@ -879,8 +897,17 @@
       "Servizio in camera",
       "Wi-Fi"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 3,
+        "serviceVote": 5,
+        "priceVote": 2,
+        "timestamp": 1715878283
+      }
+    },
+    "weightedAverageReviews": 3.4
   },
   {
     "id": "88",
@@ -1582,8 +1609,17 @@
       "Cancellazione gratuita",
       "Piscina"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 4,
+        "serviceVote": 5,
+        "priceVote": 5,
+        "timestamp": 1715878475
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "182",
@@ -1942,8 +1978,17 @@
       "Palestra",
       "TV in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 4,
+        "positionVote": 4,
+        "cleanlinessVote": 4,
+        "serviceVote": 4,
+        "priceVote": 4,
+        "timestamp": 1715878528
+      }
+    },
+    "weightedAverageReviews": 4.0
   },
   {
     "id": "165",
@@ -2443,8 +2488,17 @@
       "Wi-Fi",
       "Frigo in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 4,
+        "positionVote": 2,
+        "cleanlinessVote": 2,
+        "serviceVote": 3,
+        "priceVote": 5,
+        "timestamp": 1715878356
+      }
+    },
+    "weightedAverageReviews": 3.2
   },
   {
     "id": "119",

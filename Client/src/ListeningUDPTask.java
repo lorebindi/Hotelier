@@ -34,7 +34,7 @@ public class ListeningUDPTask implements Runnable{
                     socket.receive(packet); // Questa chiamata lancia una SocketTimeoutException dopo il timeout
                     String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
                     if(ListeningUDPTask.logged.get())
-                        ConsoleManage.synchronizedPrint("[Multicast UDP message received] >> " + msg);
+                        ConsoleManage.synchronizedPrint("[Multicast UDP message received] >> " + msg + "\n");
                 } catch (SocketTimeoutException e) {
                     /* Il timeout è scaduto ma non è stato ricevuto alcun pacchetto
                     Questo blocco viene utilizzato per controllare periodicamente che il server non sia stato chiuso.
