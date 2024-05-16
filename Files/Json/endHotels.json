@@ -240,17 +240,8 @@
       "TV in camera",
       "Frigo in camera"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 5,
-        "positionVote": 4,
-        "cleanlinessVote": 3,
-        "serviceVote": 4,
-        "priceVote": 2,
-        "timestamp": 1715441409
-      }
-    },
-    "weightedAverageReviews": 3.5523185825059045
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "6",
@@ -824,17 +815,8 @@
     "city": "Firenze",
     "phone": "339-6787075",
     "services": [],
-    "ratings": {
-      "3": {
-        "overallVote": 3,
-        "positionVote": 4,
-        "cleanlinessVote": 5,
-        "serviceVote": 5,
-        "priceVote": 4,
-        "timestamp": 1715441435
-      }
-    },
-    "weightedAverageReviews": 4.144371679590222
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "83",
@@ -1087,17 +1069,8 @@
       "Piscina",
       "Cancellazione gratuita"
     ],
-    "ratings": {
-      "4": {
-        "overallVote": 4,
-        "positionVote": 3,
-        "cleanlinessVote": 2,
-        "serviceVote": 2,
-        "priceVote": 2,
-        "timestamp": 1715441491
-      }
-    },
-    "weightedAverageReviews": 2.565563420698709
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "121",
@@ -1494,17 +1467,8 @@
       "Sauna",
       "Wi-Fi"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 4,
-        "positionVote": 4,
-        "cleanlinessVote": 4,
-        "serviceVote": 4,
-        "priceVote": 4,
-        "timestamp": 1715807199
-      }
-    },
-    "weightedAverageReviews": 4.0
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "145",
@@ -1738,17 +1702,8 @@
       "Paga in struttura",
       "Servizio in camera"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 4,
-        "positionVote": 4,
-        "cleanlinessVote": 4,
-        "serviceVote": 4,
-        "priceVote": 4,
-        "timestamp": 1715807329
-      }
-    },
-    "weightedAverageReviews": 4.0
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "91",
@@ -1931,17 +1886,8 @@
       "Paga in struttura",
       "Piscina"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 1,
-        "positionVote": 1,
-        "cleanlinessVote": 1,
-        "serviceVote": 1,
-        "priceVote": 1,
-        "timestamp": 1715807421
-      }
-    },
-    "weightedAverageReviews": 1.0
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "170",
@@ -1967,17 +1913,8 @@
       "Wi-Fi",
       "Sauna"
     ],
-    "ratings": {
-      "2": {
-        "overallVote": 1,
-        "positionVote": 1,
-        "cleanlinessVote": 1,
-        "serviceVote": 2,
-        "priceVote": 2,
-        "timestamp": 1715807510
-      }
-    },
-    "weightedAverageReviews": 1.4
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "163",
@@ -1989,17 +1926,8 @@
       "Posto auto",
       "Servizio in camera"
     ],
-    "ratings": {
-      "1": {
-        "overallVote": 3,
-        "positionVote": 3,
-        "cleanlinessVote": 3,
-        "serviceVote": 3,
-        "priceVote": 3,
-        "timestamp": 1715807607
-      }
-    },
-    "weightedAverageReviews": 3.0
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "164",
@@ -2495,17 +2423,8 @@
     "city": "Roma",
     "phone": "369-4805335",
     "services": [],
-    "ratings": {
-      "1": {
-        "overallVote": 3,
-        "positionVote": 3,
-        "cleanlinessVote": 3,
-        "serviceVote": 3,
-        "priceVote": 3,
-        "timestamp": 1715441375
-      }
-    },
-    "weightedAverageReviews": 2.960265485421587
+    "ratings": {},
+    "weightedAverageReviews": 0.0
   },
   {
     "id": "118",

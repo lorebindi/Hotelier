@@ -117,34 +117,39 @@ public class ServerMain {
      *
      * @param client il SocketChannel del client da cui leggere l'intero.
      * @return l'intero letto dal client o -5 se il canale è stato chiuso durante la lettura.
-     * @throws IOException
      */
-    private static int readIntegerFromClient(SocketChannel client) throws IOException {
+    private static int readIntegerFromClient(SocketChannel client) {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(Integer.BYTES);
             // Ricevo il codice dal server.
             int nBytesRead = client.read(inputBuffer);
             // Controllo che il canale non sia stato chiuso.
             if(nBytesRead == -1 || !client.isOpen()) {
-                client.close();
+                try {
+                    client.close();
+                } catch (IOException closeEx) {
+                    System.err.println("Error closing client channel: " + closeEx.getMessage());
+                }
                 return -5;
             }
             // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
             while (inputBuffer.hasRemaining()) {
                 nBytesRead += client.read(inputBuffer);
-                // Controllo che il canale non sia stato chiuso.
-                if (nBytesRead == -1 || !client.isOpen()) {
-                    client.close();
-                    return -5;
-                }
             }
             inputBuffer.flip();
             // ritorno l'intero ricevuto
             return inputBuffer.getInt();
         }
         catch (IOException e) {
-            throw new IOException("Error reading integer from client.");
+            System.err.println("Error reading integer from client: " + e.getMessage());
+            try {
+                client.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing client channel: " + closeEx.getMessage());
+            }
+            return -5;
         }
+
     }
 
     /**
@@ -154,25 +159,24 @@ public class ServerMain {
      * @param nByteToRead il numero di bytes da leggere dal canale.
      * @return un array di bytes contenente i dati letti. Se si verifica un errore viene
      *         restituito un array di byte di lunghezza 1.
-     * @throws IOException
      */
-    private static byte[] readByteStringFromClient(SocketChannel client, int nByteToRead) throws IOException {
+    private static byte[] readByteStringFromClient(SocketChannel client, int nByteToRead) {
         try{
             ByteBuffer inputBuffer = ByteBuffer.allocate(nByteToRead);
             // Ricevo il codice dal server.
             int nBytesRead = client.read(inputBuffer);
             // Controllo che il canale non sia stato chiuso.
             if(nBytesRead == -1 || !client.isOpen()) {
-                client.close();
+                try {
+                    client.close();
+                } catch (IOException closeEx) {
+                    System.err.println("Error closing client channel: " + closeEx.getMessage());
+                }
                 return new byte[1];
             }
             // Controllo di aver ricevuto tutti i bytes che mi aspetto, altrimenti continuo a leggere.
             while (inputBuffer.hasRemaining()) {
                 nBytesRead += client.read(inputBuffer);
-                if (nBytesRead == -1 || !client.isOpen()) {
-                    client.close();
-                    return new byte[1];
-                }       
             }
             // Prendo i byte dal ByteBuffer
             inputBuffer.flip();
@@ -182,21 +186,23 @@ public class ServerMain {
             return bytesReceived;
         }
         catch (IOException e) {
-            throw new IOException("Error reading a sequence of bytes from client.");
+            System.err.println("Error reading integer from client: " + e.getMessage());
+            try {
+                client.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing client channel: " + closeEx.getMessage());
+            }
+            return new byte[1];
         }
     }
-
-    // Scrive l'output di una richiesta (intero) al client e mette la key in OP_READ.
 
     /**
      * Scrive un intero al SocketChannel del client.
      *
      * @param client il SocketChannel del client a cui scrivere l'intero.
      * @param key la SelectionKey associata al canale del client.
-     * @throws IOException
-     * @throws ClosedChannelException
      */
-    private static void writeIntToClient (SocketChannel client, SelectionKey key) throws IOException, ClosedChannelException {
+    private static boolean writeIntToClient (SocketChannel client, SelectionKey key) {
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
         //System.out.println("[writeIntToClient] inviato intero: " + objectAttach.getOutput());
@@ -207,21 +213,19 @@ public class ServerMain {
             while (buffer.hasRemaining()) {
                 bytesWritten = client.write(buffer);    
             }
-        } catch (ClosedChannelException cce) {
-            // Il canale è chiuso dal lato client
-            client.close();
-            throw new ClosedChannelException();
+            //System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
+            key.interestOps(SelectionKey.OP_READ);
+            return true;
         }
         catch (IOException ex) {
-            client.close();
-            throw new IOException("Problem with the connection from client");
-        }
-        //System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
-        // Se il canale è aperto rimetto la chiave in OP_READ, altrimenti elimino la chiave.
-        if(client.isOpen())
-            key.interestOps(SelectionKey.OP_READ);
-        else
+            try {
+                client.close();
+            } catch (IOException closeEx) {
+                System.err.println("Error closing client channel: " + closeEx.getMessage());
+            }
             key.cancel();
+            return false;
+        }
     }
 
     /**
@@ -231,10 +235,8 @@ public class ServerMain {
      *
      * @param client il SocketChannel del client a cui scrivere l'intero.
      * @param key la SelectionKey associata al canale del client.
-     * @throws IOException
-     * @throws ClosedChannelException
      */
-    private static void writeIntAndStringToClient (SocketChannel client, SelectionKey key) throws IOException, ClosedChannelException {
+    private static boolean writeIntAndStringToClient (SocketChannel client, SelectionKey key) {
         // Se l'operazione è andata a buon fine in objectAttach è presente la stringa da inviare al client.
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         int nBytesToSend = Integer.BYTES;
@@ -260,19 +262,26 @@ public class ServerMain {
                     bytesWritten = client.write(outputBuffer);
                 }
                 //System.out.println("[writeIntToClient] scritti numero byte: " + bytesWritten);
-            } catch (ClosedChannelException cce) {
-                // Il canale è chiuso dal lato client
-                client.close();
-                throw new ClosedChannelException();
+                key.interestOps(SelectionKey.OP_READ);
+                return true;
             } catch (IOException ex) {
-                client.close();
-                throw new IOException("Problem with the connection from client");
+                try {
+                    client.close();
+                } catch (IOException closeEx) {
+                    System.err.println("Error closing client channel: " + closeEx.getMessage());
+                }
+                key.cancel();
+                return false;
             }
-            key.interestOps(SelectionKey.OP_READ);
+
         }
         // L'operazione non è NON andata a buon fine: devo inviare solo il risultato dell'operazione.
         else{ 
-            ServerMain.writeIntToClient(client, key);
+            if(!ServerMain.writeIntToClient(client, key))
+                return false;
+            else{
+                return true;
+            }
         }
 
     }
@@ -292,45 +301,39 @@ public class ServerMain {
      */
     private static int registration(SocketChannel client, SelectionKey key) {
         // Ricezione username e password
-        try{
-            String username = "";
-            String hashedPassword = "";
-            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 username, 1 password.
-            
-            // Due cicli: primo ciclo leggo l'username, secondo ciclo leggo la password.
-            while(i<2) {
-                // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
-                int string_length = ServerMain.readIntegerFromClient(client);
-                // Se il canale è stato chiuso esco.
-                if(string_length == -5) return -5;
-                // Prendo i byte dal ByteBuffer e li metto in un array di byte per convertirli in stringa.
-                byte[] stringBytes = new byte[string_length];
-                stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-                // Se il canale è stato chiuso esco.
-                if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-                // Conversione in stringa
-                if(i == 0) {
-                    username = new String(stringBytes);
-                    i++;
-                }
-                else {
-                    hashedPassword = BCrypt.hashpw(new String(stringBytes), BCrypt.gensalt()); 
-                    i++;
-                }
-                
-            }
-            
-            // Aggiungo il client all'interno della CuncurrentHashMap dei clients
-            if(ServerMain.users.putIfAbsent(username, new User (username, hashedPassword)) != null) 
-                return 1;
+        String username = "";
+        String hashedPassword = "";
+        int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 username, 1 password.
 
-            ObjectAttach objectAttach = new ObjectAttach();
-            key.attach(objectAttach);
-  
-        } catch (IOException ex) {
-            System.err.println("I/O error from registration function.");
-            return -1;
+        // Due cicli: primo ciclo leggo l'username, secondo ciclo leggo la password.
+        while(i<2) {
+            // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
+            int string_length = ServerMain.readIntegerFromClient(client);
+            // Se il canale è stato chiuso esco.
+            if(string_length == -5) return -5;
+            // Prendo i byte dal ByteBuffer e li metto in un array di byte per convertirli in stringa.
+            byte[] stringBytes = new byte[string_length];
+            stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+            // Se il canale è stato chiuso esco.
+            if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+            // Conversione in stringa
+            if(i == 0) {
+                username = new String(stringBytes);
+                i++;
+            }
+            else {
+                hashedPassword = BCrypt.hashpw(new String(stringBytes), BCrypt.gensalt());
+                i++;
+            }
+
         }
+
+        // Aggiungo il client all'interno della CuncurrentHashMap dei clients
+        if(ServerMain.users.putIfAbsent(username, new User (username, hashedPassword)) != null)
+            return 1;
+
+        ObjectAttach objectAttach = new ObjectAttach();
+        key.attach(objectAttach);
 
         return 0;
     
@@ -352,7 +355,6 @@ public class ServerMain {
      *             -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int login (SocketChannel client, SelectionKey key) {
-        
         String username = "";
         String password = "";
         // Recupero l'attach.
@@ -366,42 +368,37 @@ public class ServerMain {
         // Controllo che l'utente non si loggato
         if(objectAttach.getUsername().isEmpty()) {
             // L'utente non è loggato, ricezione username e password.
-            try{
-                int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 username, 1 password.
+            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 username, 1 password.
 
-                // Due cicli: primo ciclo leggo l'username, secondo ciclo leggo la password.
-                while(i<2) {
-                    // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
-                    int string_length = ServerMain.readIntegerFromClient(client);
-                    // Se il canale è stato chiuso esco.
-                    if(string_length == -5) return -5;
-                    // Ricevo dal client i byte che rappresentano la stringa.
-                    byte[] stringBytes = new byte[string_length];
-                    stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-                    // Se il canale è stato chiuso esco.
-                    if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-                    // Conversione in stringa
-                    if(i == 0) {
-                        username = new String(stringBytes);
-                        i++;
-                    }
-                    else {
-                        password = new String(stringBytes);
-                        i++;
-                    }
-
+            // Due cicli: primo ciclo leggo l'username, secondo ciclo leggo la password.
+            while(i<2) {
+                // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
+                int string_length = ServerMain.readIntegerFromClient(client);
+                // Se il canale è stato chiuso esco.
+                if(string_length == -5) return -5;
+                // Ricevo dal client i byte che rappresentano la stringa.
+                byte[] stringBytes = new byte[string_length];
+                stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+                // Se il canale è stato chiuso esco.
+                if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+                // Conversione in stringa
+                if(i == 0) {
+                    username = new String(stringBytes);
+                    i++;
                 }
-                // Errore: l'username non esiste. 
-                if (! ServerMain.users.containsKey(username))
-                    return -2;
-                // Errore: password sbagliata.
-                if(! BCrypt.checkpw(password, ServerMain.users.get(username).getHashedPassword())) 
-                    return -3;
+                else {
+                    password = new String(stringBytes);
+                    i++;
+                }
+
             }
-            catch (IOException ex) {
-                System.err.println("I/O error from registration function.");
-                return -4;
-            }
+            // Errore: l'username non esiste.
+            if (! ServerMain.users.containsKey(username))
+                return -2;
+            // Errore: password sbagliata.
+            if(! BCrypt.checkpw(password, ServerMain.users.get(username).getHashedPassword()))
+                return -3;
+
         }
         else {
             // Errore: l'utente è già loggato.
@@ -428,31 +425,23 @@ public class ServerMain {
      *            -5 se la connessione è stata chiusa improvvisamente.
      */
     private static int logout (SocketChannel client, SelectionKey key) {
-        String username = "";
-        try{
-            // Leggo l'intero (4 byte) che mi identifica la lunghezza della stringa.
-            int string_length = ServerMain.readIntegerFromClient(client);
-            // Se il canale è stato chiuso esco.
-            if(string_length == -5) return -5;
-            // // Ricevo dal client i byte che rappresentano la stringa..
-            byte[] stringBytes = new byte[string_length];
-            stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-            // Se il canale è stato chiuso esco.
-            if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-            // Conversione in stringa
-            username = new String(stringBytes);
-        }
-        catch (IOException ex) {
-            System.err.println("I/O error from registration function.");
-            return -3;
-        }
+        // Leggo l'intero (4 byte) che mi identifica la lunghezza della stringa.
+        int string_length = ServerMain.readIntegerFromClient(client);
+        // Se il canale è stato chiuso esco.
+        if(string_length == -5) return -5;
+        // // Ricevo dal client i byte che rappresentano la stringa..
+        byte[] stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+        // Se il canale è stato chiuso esco.
+        if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+        // Conversione in stringa
+        String username = new String(stringBytes);
 
         // Controllo che l'utente non sia già loggato.
-        if(key.attachment() == null) {
+        if(key.attachment() != null) {
             key.attach(new ObjectAttach());
             return -1; // L'utente non è loggato.
         }
-        
+
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
         
         // Errore: l'username non è lo stesso con cui si è fatto login.
@@ -486,45 +475,40 @@ public class ServerMain {
             objectAttach = (ObjectAttach) key.attachment();
         else
             objectAttach = new ObjectAttach();
-        try{
-            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 hotelName, 1 città.
 
-            // Due cicli: primo ciclo leggo il hotelName, secondo ciclo leggo la citta.
-            while(i<2) {
-                // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
-                int string_length = ServerMain.readIntegerFromClient(client);
-                // Se il canale è stato chiuso esco.
-                if(string_length == -5) return -5;
-                // Ricevo dal client i byte che rappresentano la stringa.
-                byte[] stringBytes = new byte[string_length];
-                stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-                // Se il canale è stato chiuso esco.
-                if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-                // Conversione in stringa
-                if(i == 0) {
-                    hotelName = new String(stringBytes);
-                    //System.out.println("Nome hotel: '" + hotelName + "'.");
-                    i++;
-                }
-                else {
-                    city = new String(stringBytes);
-                    //System.out.println("Citta: '" + city + "'.");
-                    i++;
-                }
+       int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 hotelName, 1 città.
+
+        // Due cicli: primo ciclo leggo il hotelName, secondo ciclo leggo la citta.
+        while(i<2) {
+            // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
+            int string_length = ServerMain.readIntegerFromClient(client);
+            // Se il canale è stato chiuso esco.
+            if(string_length == -5) return -5;
+            // Ricevo dal client i byte che rappresentano la stringa.
+            byte[] stringBytes = new byte[string_length];
+            stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+            // Se il canale è stato chiuso esco.
+            if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+            // Conversione in stringa
+            if(i == 0) {
+                hotelName = new String(stringBytes);
+                //System.out.println("Nome hotel: '" + hotelName + "'.");
+                i++;
             }
-            
-            // Ricerca dell'hotel
-            for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
-                if(entry.getValue().getName().equals(hotelName)) {
-                    String temp = entry.getValue().toString();
-                    objectAttach.setMessagge(temp);
-                    break;
-                }
+            else {
+                city = new String(stringBytes);
+                //System.out.println("Citta: '" + city + "'.");
+                i++;
             }
         }
-        catch (IOException ex) {
-            System.err.println("I/O error from registration function.");
-            return -2;
+
+        // Ricerca dell'hotel
+        for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
+            if(entry.getValue().getName().equals(hotelName)) {
+                String temp = entry.getValue().toString();
+                objectAttach.setMessagge(temp);
+                break;
+            }
         }
         
         // Se l'utente non era loggato aggiungo l'attach.
@@ -555,36 +539,30 @@ public class ServerMain {
      *            -5 se la connessione è stata chiusa improvvisamente.
      * @throws IOException
      */
-    private static int searchHotels (SocketChannel client, SelectionKey key) throws IOException {
+    private static int searchHotels (SocketChannel client, SelectionKey key) {
         String city = "";
         ObjectAttach objectAttach = null;
         if(key.attachment() != null)
             objectAttach = (ObjectAttach) key.attachment();
         else
             objectAttach = new ObjectAttach();
-        try{            
-            // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
-            int string_length = ServerMain.readIntegerFromClient(client);
-            // Se il canale è stato chiuso esco.
-            if(string_length == -5) return -5;
-            // Ricevo dal client l'insieme di byte che mi identifica la stringa.
-            byte[] stringBytes = new byte[string_length];
-            stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-            // Se il canale è stato chiuso esco.
-            if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-            // Conversione in stringa
-            city = new String(stringBytes);
-            
-            RankingStructure temp= ServerMain.rankings.get(city);
-            // Se la città esiste prendo la classifica
-            if(temp != null) {
-                objectAttach.setMessagge(temp.toString());
-            }
 
-        }
-        catch (IOException ex) {
-            System.err.println("I/O error from registration function.");
-            return -2;
+        // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della stringa.
+        int string_length = ServerMain.readIntegerFromClient(client);
+        // Se il canale è stato chiuso esco.
+        if(string_length == -5) return -5;
+        // Ricevo dal client l'insieme di byte che mi identifica la stringa.
+        byte[] stringBytes = new byte[string_length];
+        stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+        // Se il canale è stato chiuso esco.
+        if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+        // Conversione in stringa
+        city = new String(stringBytes);
+        // Recupero la rankingStructure per quella città
+        RankingStructure temp= ServerMain.rankings.get(city);
+        // Se la città esiste prendo la classifica
+        if(temp != null) {
+            objectAttach.setMessagge(temp.toString());
         }
 
         // Se l'utente non era loggato aggiungo l'attach.
@@ -615,74 +593,68 @@ public class ServerMain {
      *            -5 se la connessione è stata chiusa improvvisamente.
      * @throws IOException
      */
-    private static int insertReview (SocketChannel client, SelectionKey key) throws IOException {
+    private static int insertReview (SocketChannel client, SelectionKey key) {
         String hotelName = "";
         String city = "";
         int[] scores = new int[5];
         // Recupero il vecchio ObjectAttach
         ObjectAttach objectAttach = (ObjectAttach) key.attachment();
-        
-        try{
-            int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 nome hotel, 1 citta.
-            // Due cicli: primo ciclo leggo il nome dell'hotel, secondo ciclo leggo la citta.
-            while(i<2) {
-                // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della string.
-                int string_length = ServerMain.readIntegerFromClient(client);
-                if(string_length == -5) return -5;
-                // Ricevo dal client l'insieme di byte che mi identifica la stringa.
-                byte[] stringBytes = new byte[string_length];
-                stringBytes = ServerMain.readByteStringFromClient(client, string_length);
-                // Se il canale è stato chiuso esco.
-                if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
-                // Conversione in stringa
-                if(i == 0)
-                    hotelName = new String(stringBytes);
-                else
-                    city = new String(stringBytes);
-                i++;
-            }
-            // Ricezione dei voti che l'utente ha assegnato all'hotel
-            for(i=0; i<5; i++) {
-                scores[i] = ServerMain.readIntegerFromClient(client);
-            }
-            
-            // Controllo che l'utente sia loggato.
-            if(key.attachment() == null)
-                return -1; // L'utente non è loggato.
 
-            // Controllo che la città sia presente
-            if(ServerMain.getRankings().containsKey(city)) {
-                // Ricerca dell'id dell'hotel a cui deve essere aggiunta la recensione
-                String idHotel = "";
-                for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
-                    if (entry.getValue().getCity().equals(city) && entry.getValue().getName().equals(hotelName)) {
-                        idHotel = entry.getValue().getId();
-                        break;
-                    }
-                }
-                if (idHotel.isEmpty())
-                    return -3; // Hotel inesistente.
-
-                // Utilizzo compute() per aggiornare una parte specifica dell'hotel
-                ServerMain.hotels.compute(idHotel, (id, hotel) -> {
-                    if (hotel != null) {
-                        // Aggiungo la recensione all'insieme di recensioni per quell'hotel.
-                        hotel.addReview(scores);
-                    }
-                    // Restituisci l'hotel, modificato o non modificato
-                    return hotel;
-                });
-
-                // Incremento il numero di recensioni per quel user
-                ServerMain.users.get(objectAttach.getUsername()).addRecensione();
-            }
+        int i = 0; // Necessario per distinguere quale dei due dati sto processando: 0 nome hotel, 1 citta.
+        // Due cicli: primo ciclo leggo il nome dell'hotel, secondo ciclo leggo la citta.
+        while(i<2) {
+            // Ricevo dal client l'intero (4 byte) che mi identifica la lunghezza della string.
+            int string_length = ServerMain.readIntegerFromClient(client);
+            if(string_length == -5) return -5;
+            // Ricevo dal client l'insieme di byte che mi identifica la stringa.
+            byte[] stringBytes = new byte[string_length];
+            stringBytes = ServerMain.readByteStringFromClient(client, string_length);
+            // Se il canale è stato chiuso esco.
+            if(stringBytes.length == 1 && stringBytes[0] == 0) return -5;
+            // Conversione in stringa
+            if(i == 0)
+                hotelName = new String(stringBytes);
             else
-                return -3; // hotel inesistente.
+                city = new String(stringBytes);
+            i++;
         }
-        catch (IOException ex) {
-            System.err.println("I/O error from registration function.");
-            return -2;
+        // Ricezione dei voti che l'utente ha assegnato all'hotel
+        for(i=0; i<5; i++) {
+            scores[i] = ServerMain.readIntegerFromClient(client);
         }
+
+        // Controllo che l'utente sia loggato.
+        if(key.attachment() == null)
+            return -1; // L'utente non è loggato.
+
+        // Controllo che la città sia presente
+        if(ServerMain.getRankings().containsKey(city)) {
+            // Ricerca dell'id dell'hotel a cui deve essere aggiunta la recensione
+            String idHotel = "";
+            for (Map.Entry<String, Hotel> entry : ServerMain.getHotelsOfCity(city).entrySet()) {
+                if (entry.getValue().getCity().equals(city) && entry.getValue().getName().equals(hotelName)) {
+                    idHotel = entry.getValue().getId();
+                    break;
+                }
+            }
+            if (idHotel.isEmpty())
+                return -3; // Hotel inesistente.
+
+            // Utilizzo compute() per aggiornare una parte specifica dell'hotel
+            ServerMain.hotels.compute(idHotel, (id, hotel) -> {
+                if (hotel != null) {
+                    // Aggiungo la recensione all'insieme di recensioni per quell'hotel.
+                    hotel.addReview(scores);
+                }
+                // Restituisci l'hotel, modificato o non modificato
+                return hotel;
+            });
+
+            // Incremento il numero di recensioni per quel user
+            ServerMain.users.get(objectAttach.getUsername()).addRecensione();
+        }
+        else
+            return -3; // hotel inesistente.
 
         return 0; // Successo
     }
@@ -700,7 +672,7 @@ public class ServerMain {
      *            -5 se la connessione è stata chiusa improvvisamente.
      * @throws IOException
      */
-    private static int showBadge (SocketChannel client, SelectionKey key) throws IOException {
+    private static int showBadge (SocketChannel client, SelectionKey key) {
         // Ricevo l'username dal client.
         int usernameLength = ServerMain.readIntegerFromClient(client);
         if(usernameLength == -5) return -5;
@@ -733,8 +705,12 @@ public class ServerMain {
      * @throws IOException
      */
     private static void closeConnection(SocketChannel client, SelectionKey key) throws IOException{
+        try {
+            client.close();
+        } catch (IOException closeEx) {
+            System.err.println("Error closing client channel: " + closeEx.getMessage());
+        }
         key.cancel();
-        client.close();
     }
     
     public static void main(String[] args) {
@@ -747,27 +723,34 @@ public class ServerMain {
         ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new UsersToJsonTask(), WAITING_SECONDS_FILE_UPDATE, WAITING_SECONDS_FILE_UPDATE, TimeUnit.SECONDS);
         ServerMain.scheduledThreadPool.scheduleWithFixedDelay(new UpdateRankingsTask(), 0, WAITING_SECONDS_RANKING_RECALCULATION, TimeUnit.SECONDS);
         /*RICORDATI DI CAMBIARE DA SECONDS a MINUTES*/
-        ServerSocketChannel serverChannel;
-        Selector selector;
+        ServerSocketChannel serverSocketChannel = null;
+        Selector selector = null;
         try {
-            serverChannel = ServerSocketChannel.open();
-            ServerSocket ss = serverChannel.socket();
+            serverSocketChannel = ServerSocketChannel.open();
+            ServerSocket ss = serverSocketChannel.socket();
             InetSocketAddress address = new InetSocketAddress(InetAddress.getByName(ServerMain.Ip), ServerMain.DEFAULT_PORT);
             ss.bind(address);
-            serverChannel.configureBlocking(false);
+            serverSocketChannel.configureBlocking(false);
             selector = Selector.open();
-            serverChannel.register(selector, SelectionKey.OP_ACCEPT);
-            // Partenza del thread per terminare il server
-            Scanner scanner = new Scanner(System.in);
-            Thread listeningStopRequest = new Thread(new StopServerTask(ServerMain.stop, scanner, selector));
-            listeningStopRequest.start();
-        
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        }
+        catch (IOException e) {
+            System.out.println("IO error occurred: " + e.toString() + "\n");
+            return;
+        }
+
+        // Partenza del thread per terminare il server
+        Scanner scanner = new Scanner(System.in);
+        Thread listeningStopRequest = new Thread(new StopServerTask(ServerMain.stop, scanner, selector));
+        listeningStopRequest.start();
+
+        try {
             while (!ServerMain.stop.get()) {
                 try {
                     selector.select();
                 } 
-                catch (IOException ex) {
-                    ex.printStackTrace();
+                catch (IOException e) {
+                    System.out.println("IO error occurred: " + e.toString() + "\n");
                     break;
                 }
 
@@ -790,7 +773,7 @@ public class ServerMain {
                             SocketChannel client = (SocketChannel) key.channel();
                             int operation = ServerMain.readIntegerFromClient(client);
                             if(operation == -5) { // Il client ha chiuso il canale mentre il server leggeva l'operazione che voleva effettuare.
-                                client.close(); // Chiudo il canale
+                                key.cancel(); // Cancello la chiave
                                 break;
                             }
                             //System.out.println("L'operazione che vuole effettuare il client è la: "+ operation);
@@ -844,31 +827,13 @@ public class ServerMain {
                             // Quale operazione è stata effettuata da quel client.
                             switch (objectAttach.getOperation()){
 
-                                case 1: try{
-                                            // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
-                                            ServerMain.writeIntToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata
-                                        catch (ClosedChannelException cce) {
-                                            break;
-                                        }
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 1: // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
+                                        ServerMain.writeIntToClient(client, key);
                                         key.attach(null);
                                         break;
 
-                                case 2: try{
-                                            // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
-                                            ServerMain.writeIntToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (ClosedChannelException cce) {
-                                            break;
-                                        }
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 2: // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
+                                        ServerMain.writeIntToClient(client, key);
                                         // Se il login è andato a buon fine metto l'attach altrimenti null.
                                         if(objectAttach.getOutput() == 0) 
                                             key.attach(objectAttach);
@@ -876,17 +841,8 @@ public class ServerMain {
                                             key.attach(null);
                                         break;
 
-                                case 3: try{
-                                            // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
-                                            ServerMain.writeIntToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (ClosedChannelException cce) {
-                                            break;
-                                        }
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 3: // Scrive l'output dell'operazione (intero) al client e mette la key in OP_READ.
+                                        ServerMain.writeIntToClient(client, key);
                                         // Dopo il logout metto null come attach se l'operazione è andata a buon fine.
                                         if(objectAttach.getOutput() == 0 || objectAttach.getOutput() == -1)
                                             key.attach(null);
@@ -894,14 +850,8 @@ public class ServerMain {
                                             key.attach(objectAttach);
                                         break;
                                         
-                                case 4: try{
-                                            // Scrive l'output della richiesta e l'hotel, se presente, al client; in più mette la key in OP_READ.
-                                            ServerMain.writeIntAndStringToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 4: // Scrive l'output della richiesta e l'hotel, se presente, al client; in più mette la key in OP_READ.
+                                        ServerMain.writeIntAndStringToClient(client, key);
                                         // Gestione dell'attach.
                                         if(objectAttach.getOutput() == 0) { // L'operazione è andata a buon fine.
                                             if(objectAttach.getUsername().isEmpty()) // L'utente non era loggato.
@@ -915,14 +865,8 @@ public class ServerMain {
                                             key.attach(objectAttach);
                                         break;
                                         
-                                case 5: try{
-                                            // Scrive l'output della richiesta e gli hotels, se presenti, al client; in più mette la key in OP_READ.
-                                            ServerMain.writeIntAndStringToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 5: // Scrive l'output della richiesta e gli hotels, se presenti, al client; in più mette la key in OP_READ.
+                                        ServerMain.writeIntAndStringToClient(client, key);
                                         // Gestione dell'attach.
                                         if(objectAttach.getOutput() == 0) { // L'operazione è andata a buon fine.
                                             if(objectAttach.getUsername().isEmpty()) // L'utente non era loggato.
@@ -936,54 +880,49 @@ public class ServerMain {
                                             key.attach(objectAttach);
                                         break;
                                         
-                                case 6: try{
-                                            // Scrive l'output della richiesta
-                                            ServerMain.writeIntToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (IOException e) {
-                                            break;
-                                        }
+                                case 6: // Scrive l'output della richiesta
+                                        ServerMain.writeIntToClient(client, key);
                                         key.attach(objectAttach);
                                         break;
 
-                                case 7: try{
-                                            // Scrive l'output della richiesta.
-                                            ServerMain.writeIntAndStringToClient(client, key);
-                                        }
-                                        // Problemi sulla connessione, la key è stata cancellata.
-                                        catch (IOException e) {
-                                            break;
-                                        }
-                                        //key.interestOps(SelectionKey.OP_READ);
+                                case 7: // Scrive l'output della richiesta.
+                                        ServerMain.writeIntAndStringToClient(client, key);
                                         key.attach(objectAttach);
                                         break;
 
                             }
                         }
-                    } catch (IOException ex) { 
-                        key.cancel();
+                    } catch (IOException ex) {
                         try { key.channel().close(); }
-                        catch (IOException cex) {} 
+                        catch (IOException e) {
+                            System.out.println("IO error occurred: " + e.toString() + e.getMessage() + "\n");
+                        }
+                        key.cancel();
                     }
                 
                 }
             }
 
-            try{
-                // Aspetto la terminazione del StopServerTask
-                listeningStopRequest.join();
-            }
-            catch (InterruptedException e){
-                System.out.println("Errore chiusura thread StopServer.");
-            }
-
-            serverChannel.close();
         }
-        catch (IOException ex) {
-            ex.printStackTrace();
+        catch (Exception e) {
+            System.out.println("Unexepcted error occurred: " + e +" "+ e.getMessage() + "\n");
         }
         finally {
+            // Chiudo il ServerSocketChannel
+            if (serverSocketChannel.isOpen()) {
+                try {
+                    serverSocketChannel.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing server channel: " + e);
+                }
+            }
+            // Aspetto la terminazione del StopServerTask
+            try {
+                listeningStopRequest.join();
+            }
+            catch(InterruptedException e){
+                System.out.println("Interrupted while waiting for the listening thread to finish: " + e);
+            }
             // Chiusura dello scheduledThreadPool
             ServerMain.scheduledThreadPool.shutdown();
             try{
