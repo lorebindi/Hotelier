@@ -900,6 +900,14 @@ public class ServerMain {
             System.out.println("Unexepcted error occurred: " + e +" "+ e.getMessage() + "\n");
         }
         finally {
+            // Chiudo il ServerSocketChannel: interrompo l'accettazione di nuove connesioni
+            if (serverSocketChannel.isOpen()) {
+                try {
+                    serverSocketChannel.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing server channel: " + e);
+                }
+            }
             // Chiudi tutte le conessioni attive
             for(SelectionKey key : selector.keys()){
                 if (key.isValid() && key.channel() instanceof SocketChannel) {
@@ -912,14 +920,6 @@ public class ServerMain {
                             System.out.println("Error closing socket channel: " + e);
                         }
                     }
-                }
-            }
-            // Chiudo il ServerSocketChannel
-            if (serverSocketChannel.isOpen()) {
-                try {
-                    serverSocketChannel.close();
-                } catch (IOException e) {
-                    System.out.println("Error closing server channel: " + e);
                 }
             }
             // Chiudo il selector
