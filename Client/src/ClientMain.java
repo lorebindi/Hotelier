@@ -509,57 +509,64 @@ public class ClientMain {
             // Faccio partire il thread in ascolto per messaggi UDP.
             Thread listeningUDPThread = new Thread(new ListeningUDPTask(server, ClientMain.logged));
             listeningUDPThread.start();
-            // Finché il canale con il server è aperto.
-            while (server.isOpen()) {
-                // Inizializzazione Scanner
-                Scanner scanner = new Scanner(System.in);
-                // Cattura dell'operazione richiesta dall'utente.
-                int operation = ClientMain.readOperation(scanner); // Operazione richiesta dal utente.
-                
-                switch(operation) {
-                
-                    case 1: // Registrazione
+            try{
+                // Finché il canale con il server è aperto.
+                while (server.isOpen()) {
+                    // Inizializzazione Scanner
+                    Scanner scanner = new Scanner(System.in);
+                    // Cattura dell'operazione richiesta dall'utente.
+                    int operation = ClientMain.readOperation(scanner); // Operazione richiesta dal utente.
+
+                    switch (operation) {
+
+                        case 1: // Registrazione
                             ClientMain.registration(server, operation, scanner);
                             break;
-                        
-                    case 2: // Login
+
+                        case 2: // Login
                             ClientMain.login(server, operation, scanner);
                             break;
-                        
-                    case 3: // Logout
+
+                        case 3: // Logout
                             ClientMain.logout(server, operation);
                             break;
-                            
-                    case 4: // searchHotel
+
+                        case 4: // searchHotel
                             ClientMain.searchHotel(server, operation, scanner);
                             break;
-                            
-                    case 5: // searchHotels
+
+                        case 5: // searchHotels
                             ClientMain.searchHotels(server, operation, scanner);
                             break;
-                    
-                    case 6: // insertReview
+
+                        case 6: // insertReview
                             ClientMain.insertReview(server, operation, scanner);
                             break;
-                            
-                    case 7: // showMyBadge
+
+                        case 7: // showMyBadge
                             ClientMain.showMyBadge(server, operation);
                             break;
 
-                    case 8: // closeConnection
-                            ClientMain.closeConnection(server,operation);
+                        case 8: // closeConnection
+                            ClientMain.closeConnection(server, operation);
                             break;
+                    }
                 }
             }
-            // Attesa terminazione del thread UDP
-            try {
-                listeningUDPThread.join();
-            } catch (InterruptedException e) {
-                ConsoleManage.synchronizedErrPrint("Error while waiting for the listening thread to finish.\n");
+            catch(IOException e) {
+                    ConsoleManage.synchronizedErrPrint("IO error occurred: " + e.toString() + "\n");
+            }
+            finally {
+                // Attesa terminazione del thread UDP
+                try {
+                    listeningUDPThread.join();
+                } catch (InterruptedException e) {
+                    ConsoleManage.synchronizedErrPrint("Error while waiting for the listening thread to finish.\n");
+                }
             }
         }
         catch (IOException ex) {
-            ConsoleManage.synchronizedErrPrint(ex.toString());
+            ConsoleManage.synchronizedErrPrint("IO error occured: " + ex.toString() + "\n");
         }
 
         ConsoleManage.synchronizedPrint("Client Terminated.");
