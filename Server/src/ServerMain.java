@@ -429,7 +429,7 @@ public class ServerMain {
         String username = new String(stringBytes);
 
         // Controllo che l'utente non sia già loggato.
-        if(key.attachment() == null) {
+        if(key.attachment() == null || ((ObjectAttach) key.attachment()).getUsername().isEmpty()) {
             key.attach(new ObjectAttach());
             return -1; // L'utente non è loggato.
         }

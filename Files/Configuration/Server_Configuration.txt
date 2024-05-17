@@ -1,6 +1,6 @@
 Ip:127.0.0.1
 Port:1919
-Waiting_Seconds_Ranking_Recalculation:20
-Waiting_Seconds_File_Update:15
+Waiting_Seconds_Ranking_Recalculation:10
+Waiting_Seconds_File_Update:8
 Multicast_Address:225.1.1.0
 Multicast_Port:8888

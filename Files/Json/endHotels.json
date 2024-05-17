@@ -165,8 +165,17 @@
       "Sauna",
       "Palestra"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "4": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 4,
+        "serviceVote": 2,
+        "priceVote": 5,
+        "timestamp": 1715937586
+      }
+    },
+    "weightedAverageReviews": 3.4
   },
   {
     "id": "1",
@@ -354,8 +363,17 @@
       "Sauna",
       "Paga in struttura"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "5": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 3,
+        "serviceVote": 1,
+        "priceVote": 5,
+        "timestamp": 1715941969
+      }
+    },
+    "weightedAverageReviews": 3.0
   },
   {
     "id": "153",
@@ -668,8 +686,17 @@
       "Piscina",
       "TV in camera"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "4": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 5,
+        "serviceVote": 5,
+        "priceVote": 1,
+        "timestamp": 1715940559
+      }
+    },
+    "weightedAverageReviews": 3.6
   },
   {
     "id": "132",
@@ -782,8 +809,17 @@
       "Posto auto",
       "Sauna"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "3": {
+        "overallVote": 3,
+        "positionVote": 2,
+        "cleanlinessVote": 2,
+        "serviceVote": 4,
+        "priceVote": 5,
+        "timestamp": 1715940541
+      }
+    },
+    "weightedAverageReviews": 3.2
   },
   {
     "id": "139",
@@ -842,8 +878,17 @@
     "city": "Firenze",
     "phone": "339-6787075",
     "services": [],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 2,
+        "positionVote": 2,
+        "cleanlinessVote": 2,
+        "serviceVote": 2,
+        "priceVote": 5,
+        "timestamp": 1715937369
+      }
+    },
+    "weightedAverageReviews": 2.6
   },
   {
     "id": "83",
@@ -2175,8 +2220,17 @@
       "Cancellazione gratuita",
       "Posto auto"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "2": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 3,
+        "serviceVote": 2,
+        "priceVote": 1,
+        "timestamp": 1715940460
+      }
+    },
+    "weightedAverageReviews": 2.6
   },
   {
     "id": "177",
@@ -2260,8 +2314,17 @@
     "city": "Reggio-Emilia",
     "phone": "376-6994764",
     "services": [],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 1,
+        "positionVote": 2,
+        "cleanlinessVote": 3,
+        "serviceVote": 4,
+        "priceVote": 5,
+        "timestamp": 1715940421
+      }
+    },
+    "weightedAverageReviews": 3.0
   },
   {
     "id": "73",
@@ -2453,8 +2516,17 @@
       "Cancellazione gratuita",
       "Paga in struttura"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "3": {
+        "overallVote": 3,
+        "positionVote": 3,
+        "cleanlinessVote": 3,
+        "serviceVote": 4,
+        "priceVote": 5,
+        "timestamp": 1715937444
+      }
+    },
+    "weightedAverageReviews": 3.6
   },
   {
     "id": "116",
@@ -2576,8 +2648,17 @@
       "Servizio in camera",
       "Piscina"
     ],
-    "ratings": {},
-    "weightedAverageReviews": 0.0
+    "ratings": {
+      "1": {
+        "overallVote": 3,
+        "positionVote": 4,
+        "cleanlinessVote": 4,
+        "serviceVote": 3,
+        "priceVote": 3,
+        "timestamp": 1715937300
+      }
+    },
+    "weightedAverageReviews": 3.4
   },
   {
     "id": "14",
