@@ -4,3 +4,6 @@ Waiting_Seconds_Ranking_Recalculation:10
 Waiting_Seconds_File_Update:8
 Multicast_Address:225.1.1.0
 Multicast_Port:8888
+START_FILE_HOTELS_PATH:Files/Json/Hotels.json
+END_FILE_HOTELS_PATH:Files/Json/endHotels.json
+FILE_USERS_PATH:Files/Json/Users.json

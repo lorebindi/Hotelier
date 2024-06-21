@@ -13,10 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /*Classe che si preoccupa della lettura da/a file json*/
 public class FilesJsonReader{
     // File di partenza fornito.
-    private final static String START_FILE_HOTELS_PATH = "Files/Json/Hotels.json";
+    private final static String START_FILE_HOTELS_PATH = ServerFileConfigurationReader.getStartFileHotelsPath();
     // File di hotel utilizzato in cui per ogni hotel sono specificate tutte le recensioni.
-    private final static String END_FILE_HOTELS_PATH = "Files/Json/endHotels.json";
-    private final static String FILE_CLIENTS_PATH = "Files/Json/Users.json";
+    private final static String END_FILE_HOTELS_PATH = ServerFileConfigurationReader.getEndFileHotelsPath();
+    private final static String FILE_CLIENTS_PATH = ServerFileConfigurationReader.getFileUsersPath();
 
     /**
      * Metodo che legge le informazioni sugli hotel da un file JSON e li inserisce

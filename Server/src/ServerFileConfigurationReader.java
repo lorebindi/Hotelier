@@ -29,4 +29,17 @@ public class ServerFileConfigurationReader extends FileConfigurationReader {
         return serverConfigMap.get("Waiting_Seconds_File_Update");
     }
 
+    public static String getStartFileHotelsPath(){
+        return serverConfigMap.get("START_FILE_HOTELS_PATH");
+    }
+
+    public static String getEndFileHotelsPath(){
+        return serverConfigMap.get("END_FILE_HOTELS_PATH");
+    }
+
+
+    public static String getFileUsersPath(){
+        return serverConfigMap.get("FILE_USERS_PATH");
+    }
+
 }
