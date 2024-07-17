@@ -1,16 +1,5 @@
-**Progetto universitario**
-
-Titolo del Progetto:
-HOTELIER: an HOTEL advIsor sERvice
-
-Corso:
-Laboratorio III
-
-Anno accademico:
-2023/2024
-
 ### Project Description
-HOTELIER è un servizio semplificato di recensioni e classifiche per hotel ispirato a TripAdvisor. Il progetto mira a implementare funzionalità principali come la ricerca degli hotel, l'invio delle recensioni e la classificazione degli utenti basata sulle recensioni.
+HOTELIER è un **progetto universitario** realizzato per il corso di Laboratorio III della triennale di informatica presso l'Università di Pisa. Hotelier è un servizio semplificato di recensioni e classifiche per hotel ispirato a TripAdvisor. Il progetto mira a implementare funzionalità principali come la ricerca degli hotel, l'invio delle recensioni e la classificazione degli utenti basata sulle recensioni.
 
 Aspetti principali:
 
